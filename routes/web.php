@@ -12,10 +12,10 @@
 */
 
 Route::get('/', function () {
-    return redirect()->intended('home');
+    return redirect()->intended('dashboard');
 });
 Route::get('/welcome', function () {
-    return redirect()->intended('home');
+    return redirect()->intended('dashboard');
 });
 
 
@@ -24,4 +24,4 @@ Route::get('/sam/fun2', ['uses'=>'SamController@fun2']);
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
