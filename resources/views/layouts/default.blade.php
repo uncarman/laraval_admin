@@ -18,20 +18,27 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="{{ asset('js/angular.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/moment-with-locales.min.js') }}"></script>
+    <script src="{{ asset('js/comm.js') }}"></script>
 </head>
-<body class="hold-transition skin-blue">
-<div class="wrapper">
-    @include('layouts._header')
-    @include('layouts._sidebar')
+<body class="hold-transition skin-blue" ng-app="app">
+<div class="wrapper" ng-controller="pageCtrl">
+    {{--@include('layouts._header')--}}
+    {{--@include('layouts._sidebar')--}}
     @include('layouts._content')
-    @include('layouts._footer')
-    <div class="control-sidebar-bg"></div>
+    {{--@include('layouts._footer')--}}
+    {{--<div class="control-sidebar-bg"></div>--}}
 </div>
 <!-- jQuery 3.1.1 -->
 <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script src="{{ asset('js/jquery-ui-1.10.4.min.js') }}"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/admin-lte/dist/js/adminlte.js"></script>
+<script src='https://webapi.amap.com/maps?v=1.4.10&key=9ab87268e7b0963b097a9c6c7ddd06d9'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.common.js"></script>
 </body>
 </html>
