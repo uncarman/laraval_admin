@@ -33,7 +33,7 @@ class ApiController extends Controller
     }
 
     private function syncAmmeterData(Request $request) {
-        $meter_sn = $request->get("ammeter_sn", "");
+        $meter_sn = $request->get("meter_sn", "");
         $collector_sn = $request->get("collector_sn", "");
         if(empty($meter_sn)) {
             return makeFailedMsg("缺少表sn号");
@@ -58,7 +58,7 @@ class ApiController extends Controller
     }
 
     private function syncWatermeterData(Request $request) {
-        $meter_sn = $request->get("watermeter_sn", "");
+        $meter_sn = $request->get("meter_sn", "");
         $collector_sn = $request->get("collector_sn", "");
         if(empty($meter_sn)) {
             return makeFailedMsg("缺少表sn号");
@@ -82,7 +82,7 @@ class ApiController extends Controller
     }
 
     private function syncEnergymeterData(Request $request) {
-        $meter_sn = $request->get("energymeter_sn", "");
+        $meter_sn = $request->get("meter_sn", "");
         $collector_sn = $request->get("collector_sn", "");
         if(empty($meter_sn)) {
             return makeFailedMsg("缺少表sn号");
