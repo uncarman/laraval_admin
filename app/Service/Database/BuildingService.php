@@ -87,7 +87,7 @@ class BuildingService
             ]);
     }
 
-    public function getEnegymeterBySn($collectorSn, $meterSn) {
+    public function getEnergymeterBySn($collectorSn, $meterSn) {
         $sql = "
             SELECT
                 a.*
