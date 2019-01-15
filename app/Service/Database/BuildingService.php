@@ -44,15 +44,15 @@ class BuildingService
         return empty($res) ? [] : head($res);
     }
 
-    public function getAmmeterBySn($collectorSn, $ammeterSn) {
+    public function getAmmeterBySn($collectorSn, $meterSn) {
         $sql = "
             SELECT
                 a.*
             from ammeter a 
             LEFT JOIN collector c on a.collector_id = c.id
-              where a.sn =:ammeterSn  and c.sn = :collectorSn
+              where a.sn =:meterSn  and c.sn = :collectorSn
        ";
-        $res = $this->db->select($sql, [ "ammeterSn" => $ammeterSn, "collectorSn" => $collectorSn ]);
+        $res = $this->db->select($sql, [ "meterSn" => $meterSn, "collectorSn" => $collectorSn ]);
         return empty($res) ? [] : head($res);
     }
 
@@ -61,6 +61,48 @@ class BuildingService
             ->insert(["ammeter_id" => $params['ammeter_id'],
                 "positive_active_power" => $params['positive_active_power'],
                 "reverse_active_power" =>$params['reverse_active_power'],
+                "other_data" =>$params['other_data'],
+                "recorded_at" =>$params['recorded_at'],
+            ]);
+    }
+
+    public function getWatermeterBySn($collectorSn, $meterSn) {
+    $sql = "
+            SELECT
+                a.*
+            from watermeter a 
+            LEFT JOIN collector c on a.collector_id = c.id
+              where a.sn =:meterSn  and c.sn = :collectorSn
+       ";
+    $res = $this->db->select($sql, [ "meterSn" => $meterSn, "collectorSn" => $collectorSn ]);
+    return empty($res) ? [] : head($res);
+}
+
+    public function insertWatermeterData($params) {
+        return $this->db->table("watermeter_data")
+            ->insert(["watermeter_id" => $params['ammeter_id'],
+                "indication" => $params['indication'],
+                "other_data" =>$params['other_data'],
+                "recorded_at" =>$params['recorded_at'],
+            ]);
+    }
+
+    public function getEnegymeterBySn($collectorSn, $meterSn) {
+        $sql = "
+            SELECT
+                a.*
+            from energymeter a 
+            LEFT JOIN collector c on a.collector_id = c.id
+              where a.sn =:meterSn  and c.sn = :collectorSn
+       ";
+        $res = $this->db->select($sql, [ "meterSn" => $meterSn, "collectorSn" => $collectorSn ]);
+        return empty($res) ? [] : head($res);
+    }
+
+    public function insertEnergymeterData($params) {
+        return $this->db->table("energymeter_data")
+            ->insert(["energymeter_id" => $params['ammeter_id'],
+                "indication" => $params['indication'],
                 "other_data" =>$params['other_data'],
                 "recorded_at" =>$params['recorded_at'],
             ]);
