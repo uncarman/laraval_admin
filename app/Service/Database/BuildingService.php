@@ -80,7 +80,7 @@ class BuildingService
 
     public function insertWatermeterData($params) {
         return $this->db->table("watermeter_data")
-            ->insert(["watermeter_id" => $params['ammeter_id'],
+            ->insert(["watermeter_id" => $params['watermeter_id'],
                 "indication" => $params['indication'],
                 "other_data" =>$params['other_data'],
                 "recorded_at" =>$params['recorded_at'],
@@ -101,7 +101,7 @@ class BuildingService
 
     public function insertEnergymeterData($params) {
         return $this->db->table("energymeter_data")
-            ->insert(["energymeter_id" => $params['ammeter_id'],
+            ->insert(["energymeter_id" => $params['energymeter_id'],
                 "indication" => $params['indication'],
                 "other_data" =>$params['other_data'],
                 "recorded_at" =>$params['recorded_at'],
