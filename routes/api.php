@@ -17,4 +17,4 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-Route::post('syncAmmeterData', 'Api\ApiController@syncAmmeterData');
+Route::post('syncMeterData', 'Api\ApiController@syncMeterData');
