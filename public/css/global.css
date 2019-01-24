@@ -1,0 +1,40 @@
+
+.big-echart {
+ width: 1000px; height: 1000px;
+}
+
+.main-header { border-bottom: 2px solid #000; }
+
+.skin-blue .main-header .logo { position: relative; z-index: 100000; color: #fff;}
+
+.skin-blue .main-header .navbar .nav > li > a:hover, .skin-blue .main-header .navbar .nav > li > a:active, .skin-blue .main-header .navbar .nav > li > a:focus, .skin-blue .main-header .navbar .nav .open > a, .skin-blue .main-header .navbar .nav .open > a:hover, .skin-blue .main-header .navbar .nav .open > a:focus, .skin-blue .main-header .navbar .nav > .active > a
+ { background: none; }
+
+.skin-blue .main-header .navbar .nav > li > a { display: inline-block; }
+.nav-pills .btn-group .dropdown-toggle { display: inline-block; margin-left: -25px; margin-right: 0px; cursor: pointer; }
+.btn-group.open .dropdown-toggle { -webkit-box-shadow: none; box-shadow:none; }
+
+.table { border: 1px solid #ddd; }
+thead { background: #444; }
+thead th { color: #fff; }
+
+/* 监测 */
+.calendar { margin:0px auto; padding:5px; background-color:#fff; }
+.calendar-week .item, .calendar-date .item { width: 40px; height: 40px;}
+.calendar-title { height:40px; }
+.calendar-today { width: 100px; height: 53px; }
+.date { margin: 0px; }
+.calendar-date .item-selectedDay, .calendar-date .item-selectedDay:hover { background-color:#0b96eb; color:#fff; }
+.calendar-title .arrow { width: 120px; }
+#backToday { left: 35%; }
+.item-warning { background:#ff808e3d; }
+
+.summaryPanel .t1 { font-size: 14px; }
+.summaryPanel .t2, .summaryPanel .t3 { font-size: 12px; }
+.summaryPanel .t1 em, .summaryPanel .t2 em, .summaryPanel .t3 em { display: inline-block; width: 80px; }
+.summaryPanel .t1 b { font-size: 36px; }
+.summaryPanel .t2 b { font-size: 20px; color:#0b96eb; }
+.summaryPanel .t3 b { font-size: 20px; color:#0b96eb; }
+
+.summaryPanel .up { color: red; }
+.summaryPanel .down { color: green; }

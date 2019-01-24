@@ -40,49 +40,14 @@
             "baseTableList": "/system/base/table_list", // table列表
             "baseTableDetail": "/system/base/table_detail/{table_name}", // table列表
 
-            // pigeonDept_1_1
-            "mallGoodsList": "/api/backend/v1/mall/goods/list", // 商城商品列表 ?state={state}&query={query}&page={page}
-            "mailGoods" : "/api/backend/v1/mall/goods", // 商品详情 ?pk={pk}
-            "mailGoodsUpdate" : "/api/backend/v1/mall/goods", // 商品编辑
 
-            // pigeonDept_1_2
-            "mallPigeonList": "/api/backend/v1/mall/pigeon/list", // 商品鸽列表 ?query={query}&page={page}
-            "mallPigeon": "/api/backend/v1/mall/pigeon", // 商品鸽信息 ?query={query}&page={page}
-            "mailPigeonUpdate": "/api/backend/v1/mall/pigeon", // 商品鸽信息 ?query={query}&page={page}
+            "ajaxGetSummary": "/ajax_get_building_total", //
+            "ajaxGetSummaryByDate": "/ajax_get_building_total_by_date", //
+            "ajaxGetMeters": "/ajax_get_meters", //
+            "ajaxGetMeterDatas": "/ajax_get_meter_datas", //
 
-            // pigeonDept_2_1
-            "mallAuctionList": "/api/backend/v1/mall/auction/list",   // Mall - 拍卖场列表
-            "mallAuctionState": "/api/backend/v1/mall/auction/state",   // Mall - 拍卖场状态修改
-            "mallAuction": "/api/backend/v1/mall/auction",   // Mall -  拍卖场编辑
-            "mallAuctionPigeonList": "/api/backend/v1/mall/auction/pigeon/list", // Mall - 竞拍场鸽单
-            "mallPigeons": "/api/backend/v1/mall/pigeons", // Mall - 商品鸽搜索
-            "mallAuctionPigeon": "/api/backend/v1/mall/auction/pigeon", // Mall - 拍卖场鸽单编辑
+            "ajaxGroupTree": "/building/ajaxGroupTree", //
 
-            // pigeonDept_2_2
-            "mallStaticPigeonList": "/api/backend/v1/mall/static/pigeon/list", // Mall - 定价鸽单
-            "mallStaticPigeon": "/api/backend/v1/mall/static/pigeon", // Mall - 定价鸽单编辑
-
-            // pigeonDept_2_3
-            "mallSuggestGoodsList": "/api/backend/v1/mall/suggest/goods/list", // Mall - 商城优选
-            "mallSuggestGoods": "/api/backend/v1/mall/suggest/goods", // Mall - 商城优选编辑
-            "mallGoodsList": "/api/backend/v1/mall/goods/list", // Mall - 商城商品列表
-
-            // pigeonDept_2_4
-            "mallCatList": "/api/backend/v1/mall/cat/list", // Mall - 商城-分类列表
-            "mallCatGoodsList": "/api/backend/v1/mall/cat/goods/list",  // Mall - 商城-分类商品
-            "mallCat": "/api/backend/v1/mall/cat", // Mall - 商城-分类编辑
-            "mallCatGoods": "/api/backend/v1/mall/cat/goods",  // Mall - 商城-分类商品编辑
-            "mallCatState": "/api/backend/v1/mall/cat/state", // Mall - 商城-分类状态修改
-            "mallBannerList": "/api/backend/v1/mall/banner/list", // Mall - 商城-横幅列表
-            "mailBanner": "/api/backend/v1/mall/banner", // Mall - 商城-横幅编辑
-            "mailBannerDel": "/api/backend/v1/mall/banner/del", // Mall - 商城-横幅删除
-
-
-            // stock_1_1
-            "storePigeonList": "/api/backend/v1/store/pigeon/list",  // Store - 库存鸽-库存鸽列表
-            "storePigeon": "/api/backend/v1/store/pigeon", // Store - 库存鸽-鸽子档案
-            "storeBloodList": "/api/backend/v1/store/blood/list",  // Store - 库存鸽-血统列表
-            "storeBlood": "?????",  // Store - 库存鸽-添加血统
         },
 
         // 分页参数
@@ -102,167 +67,14 @@
             "5": "操作被拒绝",
         },
 
-        // 顶部菜单
-        top_menus : [
-            {
-                "page": "datas",
-                "link": "",
-                "class": "icons icon-datas",
-                "name": "数据表",
-                "icon": "imgs/default_header_icon.png",
-                "children": [
-                    {
-                        "page": "datas_1",
-                        "name": "鸽业数据",
-                        "link": "datas_1",
-                    },
-                    {
-                        "page": "datas_2",
-                        "name": "公棚数据",
-                        "link": "datas_2",
-                    },
-                    {
-                        "page": "datas_3",
-                        "name": "俱乐部数据",
-                        "link": "datas_3",
-                    }
-                ]
-            },
-            {
-                "page": "pigeonDept",
-                "link": "",
-                "class": "icons icon-pigeonDept",
-                "name": "鸽业部门",
-                "icon": "imgs/default_header_icon.png",
-                "children": [
-                    {
-                        "page": "pigeonDept_1",
-                        "link": "pigeonDept_1_1",
-                        "name": "商品管理",
-                        "icon": "imgs/default_header_icon.png",
-                        "children": [
-                            {
-                                "page": "pigeonDept_1_1",
-                                "name": "商城商品",
-                                "link": "pigeonDept_1_1",
-                            },
-                            {
-                                "page": "pigeonDept_1_2",
-                                "name": "拍卖商品",
-                                "icon": "",
-                                "link": "pigeonDept_1_2",
-                            }
-                        ]
-                    },
-                    {
-                        "page": "pigeonDept_2",
-                        "link": "pigeonDept_2_1",
-                        "name": "上架管理",
-                        "icon": "imgs/default_header_icon.png",
-                        "children": [
-                            {
-                                "page": "pigeonDept_2_1",
-                                "name": "竞价拍卖",
-                                "link": "pigeonDept_2_1",
-                            },
-                            {
-                                "page": "pigeonDept_2_2",
-                                "name": "定价拍卖",
-                                "icon": "",
-                                "link": "pigeonDept_2_2",
-                            },
-                            {
-                                "page": "pigeonDept_2_3",
-                                "name": "商城优选",
-                                "link": "pigeonDept_2_3",
-                            },
-                            {
-                                "page": "pigeonDept_2_4",
-                                "name": "分类入口",
-                                "link": "pigeonDept_2_4",
-                            }
-                        ]
-                    },
-                    {
-                        "page": "pigeonDept_3",
-                        "link": "pigeonDept_3",
-                        "name": "用户订单",
-                        "icon": "imgs/default_header_icon.png",
-                    }
-                ]
-            },
-            {
-                "page": "stock",
-                "link": "",
-                "class": "icons icon-stock",
-                "name": "库存管理",
-                "icon": "imgs/default_header_icon.png",
-                "children": [
-                    {
-                        "page": "stock_1",
-                        "link": "stock_1_1",
-                        "name": "鸽舍管理",
-                        "icon": "imgs/default_header_icon.png",
-                        "children": [
-                            {
-                                "page": "stock_1_1",
-                                "name": "信鸽档案",
-                                "link": "stock_1_1",
-                            },
-                            {
-                                "page": "stock_1_2",
-                                "name": "配对孵化",
-                                "icon": "",
-                                "link": "stock_1_2",
-                            }
-                        ],
-                    },
-                    {
-                        "page": "stock_2",
-                        "name": "物品管理",
-                        "link": "stock_2_1",
-                        "icon": "imgs/default_header_icon.png",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "page": "financeAudit",
-                "link": "",
-                "class": "icons icon-financeAudit",
-                "name": "财务审核",
-                "icon": "imgs/default_header_icon.png",
-                "children": [
-                    {
-                        "page": "financeAudit_1",
-                        "name": "收款审核",
-                        "link": "financeAudit_1",
-                    },
-                    {
-                        "page": "financeAudit_2",
-                        "name": "出款审核",
-                        "link": "financeAudit_2",
-                    },
-                    {
-                        "page": "financeAudit_3",
-                        "name": "账号管理",
-                        "link": "financeAudit_3",
-                    }
-                ]
-            },
-            {
-                "page": "roleAdmin",
-                "link": "roleAdmin_1",
-                "class": "icons icon-roleAdmin",
-                "name": "权限管理",
-                "icon": "imgs/default_header_icon.png",
-                "children": []
-            },
-        ],
     };
 
     var global = {
         loading_num: 0,    // for ajax loading number record
+
+        copy: function (obj){
+            return angular.copy(obj);
+        },
 
         default_ajax_error_func: function(data, param, success_func) {
             var msg = '服务器无响应。';
@@ -1014,6 +826,7 @@
             $scope.settings = settings;
 
             // 添加公共函数给 $scope
+            $scope["copy"] = global["copy"];
             $scope["goto"] = global["goto"];
             $scope.ajax_catch = global.ajax_catch;
             $scope.get_datas = global.get_datas;

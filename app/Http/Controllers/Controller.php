@@ -18,4 +18,5 @@ class Controller extends BaseController
     {
         $this->app = Container::getInstance();
     }
+
 }
