@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" style="margin-top: 180px;">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-5 col-md-offset-4">
             <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+                <div class="panel-heading">用户登录</div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">

@@ -71,7 +71,8 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading">年度消耗</div>
                         <div class="panel-body">
-                            <div id="summaryChart" style="width:100%; height:400px;"></div>
+                            <div id="summaryPieChart" class="pull-left" style="width:25%; height:400px;"></div>
+                            <div id="summaryChart" class="pull-right" style="width:75%; height:400px;"></div>
                         </div>
                     </div>
                 </div>
@@ -149,9 +150,11 @@
                 console.log("init_page");
 
                 $scope.summaryChart = echarts.init(document.getElementById("summaryChart"));
+                $scope.summaryPieChart = echarts.init(document.getElementById("summaryPieChart"));
                 $scope.dailyChart = echarts.init(document.getElementById("dailyChart"));
                 $scope.dailyChartDraw();
                 $scope.summaryChartDraw();
+                $scope.summaryPieDraw();
                 $scope.summaryChartTable();
             };
 
@@ -300,6 +303,30 @@
                     }
                 ]
             };
+            var pieOpt = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    x : 'center',
+                    data:['照明与插座','空调用电', '动力用电', '特殊用电']
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'用电占比',
+                        type:'pie',
+                        radius : [30, 110],
+                        center : ['50%', '50%'],
+                        roseType : 'area',
+                        x: '50%',               // for funnel
+                        max: 40,                // for funnel
+                        sort : 'ascending',     // for funnel
+                        data:[]
+                    }
+                ]
+            };
 
             $scope.dailyChartDraw = function () {
                 var opt = angular.copy(opts);
@@ -329,6 +356,17 @@
                 }
                 $scope.summaryChart.setOption(opt, true);
                 $scope.summaryChart.resize();
+            };
+
+            $scope.summaryPieDraw = function () {
+                var opt = angular.copy(pieOpt);
+                var d = [];
+                for(var j=0; j<4; j++) {
+                    d.push({value: (Math.random()*700 + 1200 - j*300).toFixed(2), "name": pieOpt.legend.data[j] });
+                }
+                opt.series[0].data = d;
+                $scope.summaryPieChart.setOption(opt, true);
+                $scope.summaryPieChart.resize();
             };
 
             $scope.summaryChartTable = function () {

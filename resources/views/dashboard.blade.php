@@ -16,9 +16,9 @@
             @include('layouts.errors')
 
             <div class="form-group">
-                {{--<button class="btn btn-default" ng-click="getSummary('ammeter')">获取总用电</button>--}}
-                {{--<button class="btn btn-default" ng-click="getSummary('watermeter')">获取总用水</button>--}}
-                {{--<button class="btn btn-default" ng-click="getSummary('energymeter')">获取总用热</button>--}}
+                <button class="btn btn-default" ng-click="getSummary('ammeter')">获取总用电</button>
+                <button class="btn btn-default" ng-click="getSummary('watermeter')">获取总用水</button>
+                <button class="btn btn-default" ng-click="getSummary('energymeter')">获取总用热</button>
 
                 <button class="btn btn-default" ng-click="getMeters('ammeter')">所有电表</button>
                 <button class="btn btn-default" ng-click="getMeterDatas(1, 'ammeter', 'hour')">电表1数据</button>
