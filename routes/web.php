@@ -11,19 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect()->intended('welcome');
-});
-Route::get('/home', function () {
-    return redirect()->intended('welcome');
-});
-Route::get('/welcome', ['uses'=>'HomeController@welcome']);
+Auth::routes();
 
+Route::get('/', function () {
+    return redirect()->intended('dashboard');
+});
 
 Route::get('/sam/fun1', ['uses'=>'SamController@fun1']);
 Route::get('/sam/fun2', ['uses'=>'SamController@fun2']);
 
-Auth::routes();
 
 //管理员账号管理
 Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
@@ -40,14 +36,18 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
 
 
 
-//管理员账号管理
 Route::group(['prefix' => 'monitor', 'middleware' => ['auth']], function () {
     Route::get('summary', 'Monitor\MonitorSummaryController@index');
     Route::get('ammeter', 'Monitor\MonitorAmmeterController@index');
     Route::get('watermeter', 'Monitor\MonitorWatermeterController@index');
 
 });
+Route::group(['prefix' => 'statistics', 'middleware' => ['auth']], function () {
+    Route::get('summary', 'Statistics\StatisticsSummaryController@index');
+    Route::get('ammeter', 'Statistics\StatisticsAmmeterController@index');
+    Route::get('watermeter', 'Statistics\StatisticsWatermeterController@index');
 
+});
 
 
 

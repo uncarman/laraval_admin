@@ -80,7 +80,7 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading">最近15天数据</div>
                         <div class="panel-body">
-                            <table class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover table-striped">
                                 <thead>
                                 <tr>
                                     <th>日期</th>

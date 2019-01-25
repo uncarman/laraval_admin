@@ -1,9 +1,10 @@
 @extends('layouts.default')
-@section('page_title', '用电监测')
+@section('page_title', '数据统计')
 
 @section('content')
 
     <style>
+
     </style>
     <!-- Default box -->
     <div class="box">
@@ -17,29 +18,29 @@
                         <div class="panel-body">
                             <div class="row summaryPanel">
                                 <div class="col-xs-3">
-                                    <p class="t1"><em>总耗电量:</em> <b>123341</b></p>
+                                    <p class="t1"><em>总用费用:</em> <b>1212</b></p>
+                                    <p class="t2"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2% </b></p>
+                                    <p class="t3"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>11% </b></p>
+                                </div>
+                                <div class="col-xs-2">
+                                    <p class="t1"><em>总用电量:</em> <b>2234</b></p>
                                     <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2.12% </b></p>
                                     <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
                                 </div>
                                 <div class="col-xs-2">
-                                    <p class="t1"><em>照明与插座:</em> <b>123341</b></p>
+                                    <p class="t1"><em>总用水量:</em> <b>3341</b></p>
                                     <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2.12% </b></p>
                                     <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
                                 </div>
                                 <div class="col-xs-2">
-                                    <p class="t1"><em>空调用电:</em> <b>123341</b></p>
-                                    <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2.12% </b></p>
-                                    <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
+                                    <p class="t1"><em>总用燃气量:</em> <b>0</b></p>
+                                    <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>0% </b></p>
+                                    <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>0% </b></p>
                                 </div>
                                 <div class="col-xs-2">
-                                    <p class="t1"><em>动力用电:</em> <b>123341</b></p>
-                                    <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2.12% </b></p>
-                                    <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
-                                </div>
-                                <div class="col-xs-2">
-                                    <p class="t1"><em>特殊用电:</em> <b>123341</b></p>
-                                    <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2.12% </b></p>
-                                    <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
+                                    <p class="t1"><em>总用蒸汽量:</em> <b>0</b></p>
+                                    <p class="t2"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>0% </b></p>
+                                    <p class="t3"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>0% </b></p>
                                 </div>
                             </div>
                         </div>
@@ -65,56 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">年度消耗</div>
-                        <div class="panel-body">
-                            <div id="summaryPieChart" class="pull-left" style="width:25%; height:400px;"></div>
-                            <div id="summaryChart" class="pull-right" style="width:75%; height:400px;"></div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-xs-12">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">最近15天数据</div>
-                        <div class="panel-body">
-                            <table class="table table-bordered table-hover table-striped">
-                                <thead>
-                                <tr>
-                                    <th>日期</th>
-                                    <th>照明与插座</th>
-                                    <th>照明与插座密度</th>
-                                    <th>空调用电</th>
-                                    <th>空调用电密度</th>
-                                    <th>动力用电</th>
-                                    <th>动力用电密度</th>
-                                    <th>特殊用电</th>
-                                    <th>特殊用电密度</th>
-                                    <th>总费用</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="d in datas.summaryTableDatas">
-                                    <td ng-bind="d.day"></td>
-                                    <td ng-bind="d.electric | number : 2"></td>
-                                    <td ng-bind="d.electric_area | number : 2"></td>
-                                    <td ng-bind="d.water | number : 2"></td>
-                                    <td ng-bind="d.water_area | number : 2"></td>
-                                    <td ng-bind="d.air | number : 2"></td>
-                                    <td ng-bind="d.air_area | number : 2"></td>
-                                    <td ng-bind="d.vapor | number : 2"></td>
-                                    <td ng-bind="d.vapor_area | number : 2"></td>
-                                    <td ng-bind="d.total | number : 2"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </div>
     </div>
 
@@ -149,11 +101,9 @@
                 console.log("init_page");
 
                 $scope.summaryChart = echarts.init(document.getElementById("summaryChart"));
-                $scope.summaryPieChart = echarts.init(document.getElementById("summaryPieChart"));
                 $scope.dailyChart = echarts.init(document.getElementById("dailyChart"));
                 $scope.dailyChartDraw();
                 $scope.summaryChartDraw();
-                $scope.summaryPieDraw();
                 $scope.summaryChartTable();
             };
 
@@ -196,7 +146,7 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['照明与插座','空调用电', '动力用电', '特殊用电']
+                    data:['用电量','用水量', '用燃气量', '用蒸汽量']
                 },
                 calculable : true,
                 xAxis : [
@@ -212,27 +162,43 @@
                 ],
                 series : [
                     {
-                        name:'照明与插座',
+                        name:'用电量',
                         type:'bar',
-                        stack: '总量',
+                        data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }
+                    },
+                    {
+                        name:'用水量',
+                        type:'bar',
+                        data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name : '平均值'}
+                            ]
+                        }
+                    },
+                    {
+                        name:'用燃气量',
+                        type:'bar',
                         data:[],
                     },
                     {
-                        name:'空调用电',
+                        name:'用蒸汽量',
                         type:'bar',
-                        stack: '总量',
-                        data:[],
-                    },
-                    {
-                        name:'动力用电',
-                        type:'bar',
-                        stack: '总量',
-                        data:[],
-                    },
-                    {
-                        name:'特殊用电',
-                        type:'bar',
-                        stack: '总量',
                         data:[],
                     }
                 ]
@@ -242,7 +208,7 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['照明与插座','空调用电','动力用电','特殊用电']
+                    data:['电','水','燃气','蒸汽']
                 },
                 calculable : true,
                 xAxis : [
@@ -261,55 +227,27 @@
                 ],
                 series : [
                     {
-                        name:'照明与插座',
+                        name:'电',
                         type:'line',
                         stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
                         data:[]
                     },
                     {
-                        name:'空调用电',
+                        name:'水',
                         type:'line',
                         stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
                         data:[]
                     },
                     {
-                        name:'动力用电',
+                        name:'燃气',
                         type:'line',
                         stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
                         data:[]
                     },
                     {
-                        name:'特殊用电',
+                        name:'蒸汽',
                         type:'line',
                         stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                        data:[]
-                    }
-                ]
-            };
-            var pieOpt = {
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-                legend: {
-                    x : 'center',
-                    data:['照明与插座','空调用电', '动力用电', '特殊用电']
-                },
-                calculable : true,
-                series : [
-                    {
-                        name:'用电占比',
-                        type:'pie',
-                        radius : [30, 110],
-                        center : ['50%', '50%'],
-                        roseType : 'area',
-                        x: '50%',               // for funnel
-                        max: 40,                // for funnel
-                        sort : 'ascending',     // for funnel
                         data:[]
                     }
                 ]
@@ -320,7 +258,11 @@
                 for(var i =0; i<4; i++) {
                     var d = [];
                     for(var j=0; j<24; j++) {
-                        d.push((Math.random()*700 + 1200 - i*300).toFixed(2));
+                        if(i<2) {
+                            d.push((Math.random()*700 + 1200 - i*300).toFixed(2));
+                        } else {
+                            d.push(0);
+                        }
                     }
                     opt.series[i].data = d;
                 }
@@ -330,7 +272,7 @@
 
             $scope.summaryChartDraw = function () {
                 var opt = angular.copy(option);
-                for(var i =0; i<4; i++) {
+                for(var i =0; i<2; i++) {
                     var d = [];
                     for(var j=0; j<12; j++) {
                         d.push((Math.random()*700 + 1200 - i*300).toFixed(2));
@@ -339,17 +281,6 @@
                 }
                 $scope.summaryChart.setOption(opt, true);
                 $scope.summaryChart.resize();
-            };
-
-            $scope.summaryPieDraw = function () {
-                var opt = angular.copy(pieOpt);
-                var d = [];
-                for(var j=0; j<4; j++) {
-                    d.push({value: (Math.random()*700 + 1200 - j*300).toFixed(2), "name": pieOpt.legend.data[j] });
-                }
-                opt.series[0].data = d;
-                $scope.summaryPieChart.setOption(opt, true);
-                $scope.summaryPieChart.resize();
             };
 
             $scope.summaryChartTable = function () {
