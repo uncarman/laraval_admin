@@ -3,6 +3,8 @@
 
 @section('content')
 
+    <link rel="stylesheet" href="http://www.jq22.com/demo/datepicker201809181248/css/datepicker.css">
+    <script src="http://www.jq22.com/demo/datepicker201809181248/js/datepicker.all.js"></script>
     <style>
         .big-echart {
             width: 800px; height: 300px;
@@ -25,6 +27,80 @@
                 <button class="btn btn-default" ng-click="getMeterDatas(2, 'ammeter', 'hour')">电表2数据</button>
                 <button class="btn btn-default" ng-click="getMeterDatas(3, 'ammeter', 'hour')">电表3数据</button>
 
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="c-datepicker-date-editor J-datepicker-range-day mt10">
+                        <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
+                        <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" value="">
+                        <span class="c-datepicker-range-separator">-</span>
+                        <input placeholder="结束日期" name="" class="c-datepicker-data-input only-date" value="">
+                    </div>
+                </div>
+                <script>
+                    //年月日范围
+                    function shortcutMonth () {
+                        // 当月
+                        var nowDay = moment().get('date');
+                        var prevMonthFirstDay = moment().subtract(1, 'months').set({ 'date': 1 });
+                        var prevMonth2FirstDay = moment().subtract(2, 'months').set({ 'date': 1 });
+                        var prevMonth3FirstDay = moment().subtract(3, 'months').set({ 'date': 1 });
+                        var prevMonthDay = moment().diff(prevMonthFirstDay, 'days');
+                        var prevMonth2Day = moment().diff(prevMonth2FirstDay, 'days');
+                        var prevMonth3Day = moment().diff(prevMonth3FirstDay, 'days');
+                        return {
+                            now: '-' + (nowDay-1) + ',0',
+                            prev: '-' + prevMonthDay + ',-' + nowDay,
+                            prev2: '-' + prevMonth2Day + ',-' + (prevMonthDay+1),
+                            prev3: '-' + prevMonth3Day + ',-' + (prevMonth2Day+1)
+                        }
+                    }
+                    var sm = shortcutMonth();
+                    var rangeShortcutOption = [
+                        {
+                            name: '昨天',
+                            day: '-1,0',
+                        },
+                        {
+                            name: '最近7天',
+                            day: '-7,0'
+                        },
+                        {
+                            name: '最近30天',
+                            day: '-30,0'
+                        },
+                        {
+                            name: '最近90天',
+                            day: '-90, 0'
+                        },
+                        {
+                            name: '这一月',
+                            day: sm.now,
+                        },
+                        {
+                            name: '上一个月',
+                            day: sm.prev,
+                        },
+                        {
+                            name: '上二个月',
+                            day: sm.prev2,
+                        },
+                        {
+                            name: '上三个月',
+                            day: sm.prev3,
+                        }
+                    ];
+                    $(function(){
+                        $('.J-datepicker-range-day').datePicker({
+                            isRange: true,
+                            hasShortcut: true,
+                            format: "YYYY-MM-DD",
+                            shortcutOptions: rangeShortcutOption
+                        });
+
+                    });
+                </script>
             </div>
 
             <div class="form-control" style="height: auto;" ng-bind="datas.datas | json"></div>
@@ -219,11 +295,6 @@
 
         $scope.init_page();
     });
-
-
-
-
-
 
 </script>
 @stop
