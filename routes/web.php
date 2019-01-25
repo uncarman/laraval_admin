@@ -16,6 +16,9 @@ Auth::routes();
 Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
+Route::get('/home', function () {
+    return redirect()->intended('dashboard');
+});
 
 Route::get('/sam/fun1', ['uses'=>'SamController@fun1']);
 Route::get('/sam/fun2', ['uses'=>'SamController@fun2']);

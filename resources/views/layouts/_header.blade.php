@@ -28,7 +28,7 @@
             </li>
 
             <li class="btn-group">
-                <a href="/monitor/summary" class=""><span class="glyphicon glyphicon-calendar"></span> 数据统计</a>
+                <a href="/statistics/summary" class=""><span class="glyphicon glyphicon-calendar"></span> 数据统计</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
