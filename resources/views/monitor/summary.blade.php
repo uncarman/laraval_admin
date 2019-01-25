@@ -310,7 +310,7 @@
                 },
                 legend: {
                     x : 'center',
-                    data:['照明与插座','空调用电', '动力用电', '特殊用电']
+                    data:['电','水','燃气','蒸汽']
                 },
                 calculable : true,
                 series : [
@@ -362,7 +362,11 @@
                 var opt = angular.copy(pieOpt);
                 var d = [];
                 for(var j=0; j<4; j++) {
-                    d.push({value: (Math.random()*700 + 1200 - j*300).toFixed(2), "name": pieOpt.legend.data[j] });
+                    if(j<2) {
+                        d.push({value: (Math.random()*700 + 1200 - j*300).toFixed(2), "name": pieOpt.legend.data[j] });
+                    } else {
+                        d.push({value: 0, "name": pieOpt.legend.data[j] });
+                    }
                 }
                 opt.series[0].data = d;
                 $scope.summaryPieChart.setOption(opt, true);
