@@ -19,8 +19,8 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="https://www.html5tricks.com/demo/jquery-calendar-with-tooltip/css/calendar.css">
+    <link rel="stylesheet" href="/css/datepicker.css">
     <link rel="stylesheet" href="/css/global.css">
-
     <!-- jQuery 3.1.1 -->
     <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="{{ asset('js/jquery-ui-1.10.4.min.js') }}"></script>
@@ -30,6 +30,7 @@
     <script src="{{ asset('js/comm.js') }}"></script>
     <script src="{{ asset('js/echarts.js') }}"></script>
     <script src="{{ asset('js/calendar.js') }}"></script>
+    <script src="{{ asset('js/datepicker.all.js') }}"></script>
 
 
     {{--<script src="https://echarts.baidu.com/echarts2/doc/example/www2/js/echarts-all.js"></script>--}}
@@ -40,7 +41,6 @@
     {{--@include('layouts._sidebar')--}}
     @include('layouts._content')
     @include('layouts._footer')
-    <div class="control-sidebar-bg"></div>
 </div>
 <!-- Bootstrap 3.3.7 -->
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
