@@ -48,9 +48,12 @@ h3 { color: #000; font-weight: bold; font-size: 14px; vertical-align: middle; li
 }
 
 /** 左侧分割线 **/
-.left-on .box-body {
+.mainbody {
     background: url("/imgs/box_left_on_bg.png") repeat-y;
-    background-position: -57px 0;
+    background-position: -280px 0;
+ }
+.left-on .mainbody {
+    background-position: -57px 0; transition: all .3s linear;
 }
 .split-line { min-height: 300px; width: 10px; position: absolute;
      left: 15px; cursor: pointer; z-index: 1000;

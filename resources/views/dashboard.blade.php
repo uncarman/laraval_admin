@@ -10,7 +10,7 @@
 
     <!-- Default box -->
     <div class="box">
-        <div class="box-body">
+        <div class="box-body mainbody">
 
             @include('layouts.errors')
 
