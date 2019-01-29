@@ -2239,7 +2239,7 @@ $(function () {
     var pickerWidth = _this.pickerObject.$container.width();
     var left = offset.left;
     if(offset.left + pickerWidth > winWidth) {
-      left = offset.left - 290;
+      left = offset.left - 390;
     }
     _this.pickerObject.$container.css({
       top: offset.top + height,

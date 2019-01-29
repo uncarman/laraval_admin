@@ -11,25 +11,29 @@
 
     <!-- Default box -->
     <div class="box">
-        <div class="box-body left-on" ng-class="datas.leftOn ? 'left-on': 'left-off'">
+        <div class="box-body">
             @include('layouts.errors')
 
             <div class="split-line" ng-click="ch_datas_on();"></div>
 
             <div class="box-left">
                 <ul class="leftNav">
-                    <li class="title">监测分析</li>
-                    <li>总体用能概述</li>
-                    <li>总体用能概述</li>
+                    <li class="title"><span class="glyphicon glyphicon-fire"></span> 监测分析</li>
+                    <li class="active"><span class="glyphicon glyphicon-star"></span> 总体用能概述</li>
+                    <li><span class="glyphicon glyphicon-star-empty"></span> 按能耗分项监测</li>
+                    <li><span class="glyphicon glyphicon-star-empty"></span> 按建筑区域监测</li>
+                    <li><span class="glyphicon glyphicon-star-empty"></span> 按组织机构监测</li>
+                    <li><span class="glyphicon glyphicon-star-empty"></span> 按自定义类别监测</li>
+                    <li><span class="glyphicon glyphicon-star-empty"></span> 按设备监测</li>
                 </ul>
 
-                <div class="divider"></div>
+                {{--<div class="divider"></div>--}}
 
-                <ul class="leftNav">
-                    <li class="title">选择时间范围</li>
-                    <li>总体用能概述</li>
-                    <li>总体用能概述</li>
-                </ul>
+                {{--<ul class="leftNav">--}}
+                    {{--<li class="title">选择时间范围</li>--}}
+                    {{--<li>总体用能概述</li>--}}
+                    {{--<li>总体用能概述</li>--}}
+                {{--</ul>--}}
             </div>
 
             <div class="box-right">
@@ -52,29 +56,38 @@
                 <div class="nav-tabContents">
                     <div class="row summaryPanel">
                         <div class="col-xs-3">
-                            <p class="t1"><em>总用费用:</em> <b>1212</b> <i>度</i></p>
-                            <p class="t2 down"><em>环比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>2% </b></p>
-                            <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>11% </b></p>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p class="t1"><em>总用费用:</em> <b>1212</b> <i>度</i></p>
+                                    <p class="t2 down"><em>环比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>2% </b></p>
+                                    <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>11% </b></p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-xs-2">
-                            <p class="t1"><em>总用电量:</em> <b>2234</b> <i>度</i></p>
-                            <p class="t2 down"><em>环比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>2.12% </b></p>
-                            <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
-                        </div>
-                        <div class="col-xs-2">
-                            <p class="t1"><em>总用水量:</em> <b>3341</b> <i>吨</i></p>
-                            <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2.12% </b></p>
-                            <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
-                        </div>
-                        <div class="col-xs-2">
-                            <p class="t1"><em>总用燃气量:</em> <b class="grey">0</b> <i>立方米</i></p>
-                            <p class="t2 right"><em>环比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
-                            <p class="t3 right"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
-                        </div>
-                        <div class="col-xs-2">
-                            <p class="t1"><em>总用蒸汽量:</em> <b class="grey">0</b> <i>立方米</i></p>
-                            <p class="t2 right"><em>环比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
-                            <p class="t3 right"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
+
+                        <div class="col-xs-9">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <p class="t1"><em>总用电量:</em> <b>2234</b> <i>度</i></p>
+                                    <p class="t2 down"><em>环比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>2.12% </b></p>
+                                    <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
+                                </div>
+                                <div class="col-xs-3">
+                                    <p class="t1"><em>总用水量:</em> <b>3341</b> <i>吨</i></p>
+                                    <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2.12% </b></p>
+                                    <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
+                                </div>
+                                <div class="col-xs-3">
+                                    <p class="t1"><em>总用燃气量:</em> <b class="grey">0</b> <i>立方米</i></p>
+                                    <p class="t2 right"><em>环比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
+                                    <p class="t3 right"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
+                                </div>
+                                <div class="col-xs-3">
+                                    <p class="t1"><em>总用蒸汽量:</em> <b class="grey">0</b> <i>立方米</i></p>
+                                    <p class="t2 right"><em>环比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
+                                    <p class="t3 right"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -164,6 +177,11 @@
 
             $scope.ch_datas_on = function () {
                 $scope.datas.leftOn = !$scope.datas.leftOn;
+                if($scope.datas.leftOn) {
+                    $("body").addClass("left-on");
+                } else {
+                    $("body").removeClass("left-on");
+                }
                 setTimeout(function () {
                     $scope.summaryChart.resize();
                     $scope.summaryPieChart.resize();
@@ -173,6 +191,7 @@
 
 
             $scope.init_page = function () {
+                global.init_top_menu();
                 // 初始化日历
                 $('#calendar').calendar({
                     ifSwitch: true, // 是否切换月份
@@ -208,32 +227,12 @@
 
             $scope.ajaxCatch = function (e) {
                 alert(e);
-            }
+            };
 
-
-            var colors = [
-                "#ff7f50",
-                "#87cefa",
-                "#da70d6",
-                "#32cd32",
-                "#6495ed",
-                "#ff69b4",
-                "#ba55d3",
-                "#cd5c5c",
-                "#ffa500",
-                "#40e0d0",
-                "#1e90ff",
-                "#ff6347",
-                "#7b68ee",
-                "#00fa9a",
-                "#ffd700",
-                "#6699FF",
-                "#ff6666",
-                "#3cb371",
-                "#b8860b",
-                "#30e0e0"
-            ];
+            // var colors = ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'];
+            var colors = ["#ff7f50", "#87cefa", "#da70d6", "#32cd32", "#6495ed", "#ff69b4", "#ba55d3", "#cd5c5c", "#ffa500", "#40e0d0", "#1e90ff", "#ff6347", "#7b68ee", "#00fa9a", "#ffd700", "#6699FF", "#ff6666", "#3cb371", "#b8860b", "#30e0e0"];
             var option = {
+                color: colors,
                 tooltip : {
                     trigger: 'axis'
                 },
@@ -303,6 +302,7 @@
                 ]
             };
             var opts = {
+                color: colors,
                 tooltip : {
                     trigger: 'axis'
                 },
@@ -359,6 +359,7 @@
                 ]
             };
             var pieOpt = {
+                color: colors,
                 tooltip : {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"

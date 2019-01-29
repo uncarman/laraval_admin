@@ -1333,6 +1333,16 @@
             }, [401]);
         },
 
+        // 顶部菜单加高亮
+        init_top_menu : function(){
+            try{
+                var page = window.location.pathname.split("/")[1];
+                $(".top-"+page).addClass("active");
+            } catch (e) {
+
+            }
+        },
+
         // 初始化页面公共内容(比如顶部菜单)
         init_comm : function($scope) {
             $scope.top_menus = settings.top_menus;

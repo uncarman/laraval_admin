@@ -12,7 +12,7 @@
         <!-- Navbar Right Menu -->
         @if(!empty(request()->user()))
         <ul class="nav nav-pills pull-left" style="position: relative; top:6px;">
-            <li class="btn-group active">
+            <li class="btn-group top-monitor">
                 <a href="/monitor/summary" class=""><span class="glyphicon glyphicon-dashboard"></span> 监测分析</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
@@ -27,7 +27,7 @@
                 </ul>
             </li>
 
-            <li class="btn-group">
+            <li class="btn-group top-statistics">
                 <a href="/statistics/summary" class=""><span class="glyphicon glyphicon-calendar"></span> 数据统计</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
@@ -40,8 +40,8 @@
                 </ul>
             </li>
 
-            <li class="btn-group">
-                <a href="#" class=""><span class="glyphicon glyphicon-leaf"></span> 节能管理</a>
+            <li class="btn-group _management">
+                <a href="/management/summary" class=""><span class="glyphicon glyphicon-leaf"></span> 节能管理</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
@@ -52,8 +52,8 @@
                 </ul>
             </li>
 
-            <li class="btn-group">
-                <a href="#" class=""><span class="glyphicon glyphicon-envelope"></span> 报警处理</a>
+            <li class="btn-group top-warning">
+                <a href="/warning/summary" class=""><span class="glyphicon glyphicon-envelope"></span> 报警处理</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
@@ -64,8 +64,8 @@
                 </ul>
             </li>
 
-            <li class="btn-group">
-                <a href="#" class=""><span class="glyphicon glyphicon-cog"></span> 系统配置</a>
+            <li class="btn-group top-settings">
+                <a href="/settings/summary" class=""><span class="glyphicon glyphicon-cog"></span> 系统配置</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
