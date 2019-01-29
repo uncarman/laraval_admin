@@ -18,7 +18,7 @@ class MonitorSummaryController extends Controller
 
     public function index(Request $request)
     {
-        return view('monitor.summary');
+        return view('single.monitor.summary');
     }
 
 

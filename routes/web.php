@@ -35,13 +35,18 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     Route::get('/groups', 'HomeController@dashboard')->name('dashboard');
 });
 
-Route::group(['prefix' => 'monitor', 'middleware' => ['auth']], function () {
-    Route::get('summary', 'Monitor\MonitorSummaryController@index');
-    Route::get('ammeter', 'Monitor\MonitorAmmeterController@index');
-    Route::get('watermeter', 'Monitor\MonitorWatermeterController@index');
+//////////////////  单个建筑 //////////////////
+Route::group(['prefix' => '/{buildingId}/monitor', 'middleware' => ['auth']], function () {
+    Route::get('/summary', 'Monitor\MonitorSummaryController@index');
+    Route::get('/ammeter', 'Monitor\MonitorAmmeterController@index');
+    Route::get('/ammeterByType', 'Monitor\MonitorAmmeterController@ammeterByType');
+    Route::get('/watermeter', 'Monitor\MonitorWatermeterController@index');
 });
-Route::group(['prefix' => 'statistics', 'middleware' => ['auth']], function () {
-    Route::get('summary', 'Statistics\StatisticsSummaryController@index');
-    Route::get('ammeter', 'Statistics\StatisticsAmmeterController@index');
-    Route::get('watermeter', 'Statistics\StatisticsWatermeterController@index');
+Route::group(['prefix' => '/{buildingId}/statistics', 'middleware' => ['auth']], function () {
+    Route::get('/summary', 'Statistics\StatisticsSummaryController@index');
+    Route::get('/ammeter', 'Statistics\StatisticsAmmeterController@index');
+    Route::get('/watermeter', 'Statistics\StatisticsWatermeterController@index');
 });
+
+
+//////////////////  多个建筑 //////////////////

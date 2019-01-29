@@ -67,6 +67,10 @@
             "5": "操作被拒绝",
         },
 
+        colors : ["#ff7f50", "#87cefa", "#da70d6", "#32cd32", "#6495ed", "#ff69b4",
+            "#ba55d3", "#cd5c5c", "#ffa500", "#40e0d0", "#1e90ff", "#ff6347", "#7b68ee",
+            "#00fa9a", "#ffd700", "#6699FF", "#ff6666", "#3cb371", "#b8860b", "#30e0e0"],
+
     };
 
     var global = {
@@ -1333,10 +1337,101 @@
             }, [401]);
         },
 
+        // 初始化最基本的scope
+        init_base_scope: function ($scope) {
+            $scope.base_init_page = function () {
+                global.init_top_menu();
+                global.init_left($scope);
+            };
+
+            //年月日范围
+            var sm = shortcutMonth();
+            var rangeShortcutOption = [
+                {
+                    name: '昨天',
+                    day: '-1,0',
+                },
+                {
+                    name: '最近7天',
+                    day: '-7,0'
+                },
+                {
+                    name: '最近30天',
+                    day: '-30,0'
+                },
+                {
+                    name: '最近90天',
+                    day: '-90, 0'
+                },
+                {
+                    name: '这一月',
+                    day: sm.now,
+                },
+                {
+                    name: '上一个月',
+                    day: sm.prev,
+                },
+                {
+                    name: '上二个月',
+                    day: sm.prev2,
+                },
+                {
+                    name: '上三个月',
+                    day: sm.prev3,
+                }
+            ];
+            function shortcutMonth () {
+                // 当月
+                var nowDay = moment().get('date');
+                var prevMonthFirstDay = moment().subtract(1, 'months').set({ 'date': 1 });
+                var prevMonth2FirstDay = moment().subtract(2, 'months').set({ 'date': 1 });
+                var prevMonth3FirstDay = moment().subtract(3, 'months').set({ 'date': 1 });
+                var prevMonthDay = moment().diff(prevMonthFirstDay, 'days');
+                var prevMonth2Day = moment().diff(prevMonth2FirstDay, 'days');
+                var prevMonth3Day = moment().diff(prevMonth3FirstDay, 'days');
+                return {
+                    now: '-' + (nowDay-1) + ',0',
+                    prev: '-' + prevMonthDay + ',-' + nowDay,
+                    prev2: '-' + prevMonth2Day + ',-' + (prevMonthDay+1),
+                    prev3: '-' + prevMonth3Day + ',-' + (prevMonth2Day+1)
+                }
+            }
+            $scope.init_datepicker = function (className) {
+                $(function(){
+                    $(className).datePicker({
+                        isRange: true,
+                        hasShortcut: true,
+                        format: "YYYY-MM-DD",
+                        shortcutOptions: rangeShortcutOption,
+                        callback: function () {
+                            
+                        }
+                    });
+                });
+            };
+
+            return $scope;
+        },
+
+        fmtEChartData: function (data){
+            var tmpSeriesData = [];
+            data.datas.map(function (p) {
+                tmpSeriesData.push([
+                    new Date(p.key),
+                    (p.val == "" ? 0 : parseFloat(p.val).toFixed(2))
+                ])
+            });
+            return tmpSeriesData;
+        },
+        drawEChart: function (echart, opt) {
+            echart.setOption(opt, true);
+            echart.resize();
+        },
+
         // 顶部菜单加高亮
         init_top_menu : function(){
             try{
-                var page = window.location.pathname.split("/")[1];
+                var page = window.location.pathname.split("/")[2];
                 $(".top-"+page).addClass("active");
             } catch (e) {
 

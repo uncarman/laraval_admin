@@ -18,8 +18,11 @@ class MonitorAmmeterController extends Controller
 
     public function index(Request $request)
     {
-        return view('monitor.ammeter');
+        return view('single.monitor.ammeter');
     }
 
-
+    public function ammeterByType(Request $request)
+    {
+        return view('single.monitor.ammeter_by_type');
+    }
 }

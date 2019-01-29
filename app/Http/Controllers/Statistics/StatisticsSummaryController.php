@@ -18,7 +18,7 @@ class StatisticsSummaryController extends Controller
 
     public function index(Request $request)
     {
-        return view('statistics.summary');
+        return view('single.statistics.summary');
     }
 
 

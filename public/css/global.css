@@ -70,7 +70,10 @@ h3 { color: #000; font-weight: bold; font-size: 14px; vertical-align: middle; li
 .left-on .box-left ul>li { line-height: 40px; border-bottom: 1px dashed #6094D0; padding: 0 15px; }
 .left-on .box-left ul>li.title { font-size: 14px; border: 1px solid #0d6aad; border-top:1px solid #B7D5EA; background: #6094D0; color: #fff; border-radius: 5px; }
 .left-on .box-left ul>li .glyphicon { margin-right: 5px; }
+.left-on .box-left ul>li>a { color: #666; display: inline-block; width: 100%; }
+.left-on .box-left ul>li>a:hover { color: #0d6aad; font-weight: bold; }
 .left-on .box-left ul>li.active { color:#0d6aad; font-weight: bold; }
+.left-on .box-left ul>li:last-child { border-bottom: 1px solid #6094D0; }
 
 .left-on .box-right { margin-left: 240px; }
 

@@ -1,5 +1,4 @@
 @extends('layouts.default')
-@section('page_title', '监测分析')
 
 @section('content')
 
@@ -19,20 +18,12 @@
                 <ul class="leftNav">
                     <li class="title"><span class="glyphicon glyphicon-fire"></span> 监测分析</li>
                     <li class="active"><span class="glyphicon glyphicon-star"></span> 总体用能概述</li>
-                    <li><span class="glyphicon glyphicon-star-empty"></span> 按能耗分项监测</li>
-                    <li><span class="glyphicon glyphicon-star-empty"></span> 按建筑区域监测</li>
-                    <li><span class="glyphicon glyphicon-star-empty"></span> 按组织机构监测</li>
-                    <li><span class="glyphicon glyphicon-star-empty"></span> 按自定义类别监测</li>
-                    <li><span class="glyphicon glyphicon-star-empty"></span> 按设备监测</li>
+                    <li><a href="../monitor/ammeter"><span class="glyphicon glyphicon-flash"></span> 电能监测</a></li>
+                    <li><a href="../monitor/watermeter"><span class="glyphicon glyphicon-tint"></span> 水量监测</a></li>
+                    <li><a href="../monitor/gasmeter"><span class="glyphicon glyphicon-fire"></span> 天然气监测</a></li>
+                    <li><a href="../monitor/vapourmeter"><span class="glyphicon glyphicon-cloud"></span> 蒸汽量监测</a></li>
+                    <li><a href="../monitor/environment"><span class="glyphicon glyphicon-lamp"></span> 室内环境监测</a></li>
                 </ul>
-
-                {{--<div class="divider"></div>--}}
-
-                {{--<ul class="leftNav">--}}
-                    {{--<li class="title">选择时间范围</li>--}}
-                    {{--<li>总体用能概述</li>--}}
-                    {{--<li>总体用能概述</li>--}}
-                {{--</ul>--}}
             </div>
 
             <div class="box-right">
@@ -57,7 +48,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <p class="t1"><em>总用费用:</em> <b>1212</b> <i>度</i></p>
+                                    <p class="t1"><em>总费用:</em> <b>1212</b> <i>元</i></p>
                                     <p class="t2 down"><em>环比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>2% </b></p>
                                     <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>11% </b></p>
                                 </div>
@@ -67,22 +58,22 @@
                         <div class="col-xs-9">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <p class="t1"><em>总用电量:</em> <b>2234</b> <i>度</i></p>
+                                    <p class="t1"><em>总电费:</em> <b>2234</b> <i>元</i></p>
                                     <p class="t2 down"><em>环比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>2.12% </b></p>
                                     <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
                                 </div>
                                 <div class="col-xs-3">
-                                    <p class="t1"><em>总用水量:</em> <b>3341</b> <i>吨</i></p>
+                                    <p class="t1"><em>总水费:</em> <b>3341</b> <i>元</i></p>
                                     <p class="t2 up"><em>环比:</em> <span class="glyphicon glyphicon-arrow-up"></span> <b>2.12% </b></p>
                                     <p class="t3 down"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-down"></span> <b>12.52% </b></p>
                                 </div>
                                 <div class="col-xs-3">
-                                    <p class="t1"><em>总用燃气量:</em> <b class="grey">0</b> <i>立方米</i></p>
+                                    <p class="t1"><em>总燃气费:</em> <b class="grey">0</b> <i>元</i></p>
                                     <p class="t2 right"><em>环比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
                                     <p class="t3 right"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
                                 </div>
                                 <div class="col-xs-3">
-                                    <p class="t1"><em>总用蒸汽量:</em> <b class="grey">0</b> <i>立方米</i></p>
+                                    <p class="t1"><em>总蒸汽费:</em> <b class="grey">0</b> <i>元</i></p>
                                     <p class="t2 right"><em>环比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
                                     <p class="t3 right"><em>2018年同比:</em> <span class="glyphicon glyphicon-arrow-right"></span> <b>0% </b></p>
                                 </div>
@@ -124,13 +115,13 @@
                             <thead>
                             <tr>
                                 <th>日期</th>
-                                <th>总用电量(KWh)</th>
-                                <th>电耗密度(KWh/m2)</th>
-                                <th>总用水量(T)</th>
+                                <th>总电费</th>
+                                <th>电耗密度(kwh/m2)</th>
+                                <th>总水费</th>
                                 <th>水耗密度(T/m2)</th>
-                                <th>总燃气量(m3)</th>
+                                <th>总燃气费</th>
                                 <th>燃气耗密度(m3/m2)</th>
-                                <th>总蒸汽量(m3)</th>
+                                <th>总蒸汽费</th>
                                 <th>蒸汽耗密度(m3/m2)</th>
                                 <th>总费用</th>
                             </tr>
@@ -168,11 +159,12 @@
 
             global.on_load_func($scope);
 
+            $scope = global.init_base_scope($scope);
             // 当前页面默认值
             let datas = {
                 leftOn: true,
             };
-            $.extend(settings.default_datas, datas);
+            $.extend(datas, settings.default_datas);
             $scope.datas = datas;
 
             $scope.ch_datas_on = function () {
@@ -183,20 +175,7 @@
             $scope.init_page = function () {
                 global.init_top_menu();
                 global.init_left($scope);
-                // 初始化日历
-                $('#calendar').calendar({
-                    ifSwitch: true, // 是否切换月份
-                    hoverDate: false, // hover是否显示当天信息
-                    backToday: true, // 是否返回当天
-                    clickFunc: function (day) {
-                        console.log(day);
-                        $("#selectedDay").html(day);
-                        $scope.dailyChartDraw();
-                    },
-                    markedDate: {
-                        "item-warning": ["20190110","20190115", "20190117"]
-                    },
-                });
+                $scope.init_datepicker('.J-datepicker-range-day');
                 console.log("init_page");
 
                 $scope.summaryChart = echarts.init(document.getElementById("summaryChart"));
@@ -221,9 +200,8 @@
             };
 
             // var colors = ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'];
-            var colors = ["#ff7f50", "#87cefa", "#da70d6", "#32cd32", "#6495ed", "#ff69b4", "#ba55d3", "#cd5c5c", "#ffa500", "#40e0d0", "#1e90ff", "#ff6347", "#7b68ee", "#00fa9a", "#ffd700", "#6699FF", "#ff6666", "#3cb371", "#b8860b", "#30e0e0"];
             var option = {
-                color: colors,
+                color: settings.colors,
                 tooltip : {
                     trigger: 'axis'
                 },
@@ -293,7 +271,7 @@
                 ]
             };
             var opts = {
-                color: colors,
+                color: settings.colors,
                 tooltip : {
                     trigger: 'axis'
                 },
@@ -350,7 +328,7 @@
                 ]
             };
             var pieOpt = {
-                color: colors,
+                color: settings.colors,
                 tooltip : {
                     trigger: 'item',
                     formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -402,6 +380,7 @@
                     }
                     opt.series[i].data = d;
                 }
+                console.log(opt);
                 $scope.summaryChart.setOption(opt, true);
                 $scope.summaryChart.resize();
             };
@@ -417,6 +396,7 @@
                     }
                 }
                 opt.series[0].data = d;
+                console.log(opt);
                 $scope.summaryPieChart.setOption(opt, true);
                 $scope.summaryPieChart.resize();
             };
@@ -443,69 +423,6 @@
                     };
                     $scope.datas.summaryTableDatas.push(d);
                 }
-            };
-
-            //年月日范围
-            function shortcutMonth () {
-                // 当月
-                var nowDay = moment().get('date');
-                var prevMonthFirstDay = moment().subtract(1, 'months').set({ 'date': 1 });
-                var prevMonth2FirstDay = moment().subtract(2, 'months').set({ 'date': 1 });
-                var prevMonth3FirstDay = moment().subtract(3, 'months').set({ 'date': 1 });
-                var prevMonthDay = moment().diff(prevMonthFirstDay, 'days');
-                var prevMonth2Day = moment().diff(prevMonth2FirstDay, 'days');
-                var prevMonth3Day = moment().diff(prevMonth3FirstDay, 'days');
-                return {
-                    now: '-' + (nowDay-1) + ',0',
-                    prev: '-' + prevMonthDay + ',-' + nowDay,
-                    prev2: '-' + prevMonth2Day + ',-' + (prevMonthDay+1),
-                    prev3: '-' + prevMonth3Day + ',-' + (prevMonth2Day+1)
-                }
-            }
-            var sm = shortcutMonth();
-            var rangeShortcutOption = [
-                {
-                    name: '昨天',
-                    day: '-1,0',
-                },
-                {
-                    name: '最近7天',
-                    day: '-7,0'
-                },
-                {
-                    name: '最近30天',
-                    day: '-30,0'
-                },
-                {
-                    name: '最近90天',
-                    day: '-90, 0'
-                },
-                {
-                    name: '这一月',
-                    day: sm.now,
-                },
-                {
-                    name: '上一个月',
-                    day: sm.prev,
-                },
-                {
-                    name: '上二个月',
-                    day: sm.prev2,
-                },
-                {
-                    name: '上三个月',
-                    day: sm.prev3,
-                }
-            ];
-            $scope.init_datepicker = function () {
-                $(function(){
-                    $('.J-datepicker-range-day').datePicker({
-                        isRange: true,
-                        hasShortcut: true,
-                        format: "YYYY-MM-DD",
-                        shortcutOptions: rangeShortcutOption
-                    });
-                });
             };
 
             $scope.init_page();

@@ -13,22 +13,22 @@
         @if(!empty(request()->user()))
         <ul class="nav nav-pills pull-left" style="position: relative; top:6px;">
             <li class="btn-group top-monitor">
-                <a href="/monitor/summary" class=""><span class="glyphicon glyphicon-dashboard"></span> 监测分析</a>
+                <a href="../monitor/summary" class=""><span class="glyphicon glyphicon-dashboard"></span> 监测分析</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="/monitor/ammeter">电能监测</a></li>
-                    <li><a href="/monitor/watermeter">水量监测</a></li>
-                    <li><a href="#">天然气监测</a></li>
-                    <li><a href="#">蒸汽量监测</a></li>
-                    <li><a href="#">室内环境监测</a></li>
+                    <li><a href="../monitor/ammeter">电能监测</a></li>
+                    <li><a href="../monitor/watermeter">水量监测</a></li>
+                    <li><a href="../monitor/gasmeter">天然气监测</a></li>
+                    <li><a href="../monitor/vapourmeter">蒸汽量监测</a></li>
+                    <li><a href="../monitor/environment">室内环境监测</a></li>
                 </ul>
             </li>
 
             <li class="btn-group top-statistics">
-                <a href="/statistics/summary" class=""><span class="glyphicon glyphicon-calendar"></span> 数据统计</a>
+                <a href="../statistics/summary" class=""><span class="glyphicon glyphicon-calendar"></span> 数据统计</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
@@ -41,7 +41,7 @@
             </li>
 
             <li class="btn-group _management">
-                <a href="/management/summary" class=""><span class="glyphicon glyphicon-leaf"></span> 节能管理</a>
+                <a href="../management/summary" class=""><span class="glyphicon glyphicon-leaf"></span> 节能管理</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
@@ -53,7 +53,7 @@
             </li>
 
             <li class="btn-group top-warning">
-                <a href="/warning/summary" class=""><span class="glyphicon glyphicon-envelope"></span> 报警处理</a>
+                <a href="../warning/summary" class=""><span class="glyphicon glyphicon-envelope"></span> 报警处理</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
@@ -65,14 +65,14 @@
             </li>
 
             <li class="btn-group top-settings">
-                <a href="/settings/summary" class=""><span class="glyphicon glyphicon-cog"></span> 系统配置</a>
+                <a href="../settings/summary" class=""><span class="glyphicon glyphicon-cog"></span> 系统配置</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="/monitor/ammeter">建筑管理</a></li>
-                    <li><a href="/monitor/watermeter">设备管理</a></li>
+                    <li><a href="../monitor/ammeter">建筑管理</a></li>
+                    <li><a href="../monitor/watermeter">设备管理</a></li>
                     <li><a href="/monitor/watermeter">基本配置</a></li>
                     <li class="divider"></li>
                     <li><a href="/monitor/watermeter">账号管理</a></li>
