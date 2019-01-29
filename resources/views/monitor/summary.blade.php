@@ -172,7 +172,8 @@
             let datas = {
                 leftOn: true,
             };
-            $scope.datas = { ...settings.default_datas, ...datas };
+            $.extend(settings.default_datas, datas);
+            $scope.datas = datas;
 
             $scope.ch_datas_on = function () {
                 $scope.datas.leftOn = !$scope.datas.leftOn;

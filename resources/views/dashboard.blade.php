@@ -130,7 +130,8 @@
         let datas = {
             existAmmeter: [],
         };
-        $scope.datas = { ...settings.default_datas, ...datas };
+        $.extend(settings.default_datas, datas);
+        $scope.datas = datas;
 
         $scope.init_page = function () {
             $scope.ammeterHourBig = echarts.init(document.getElementById("ammeterHourBig"));
