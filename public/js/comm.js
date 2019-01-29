@@ -1342,6 +1342,19 @@
 
             }
         },
+        // 通用左侧菜单
+        init_left: function ($scope) {
+            if($scope.datas.leftOn) {
+                $("body").addClass("left-on");
+            } else {
+                $("body").removeClass("left-on");
+            }
+            setTimeout(function () {
+                $scope.summaryChart.resize();
+                $scope.summaryPieChart.resize();
+                $scope.dailyChart.resize();
+            }, 300);
+        },
 
         // 初始化页面公共内容(比如顶部菜单)
         init_comm : function($scope) {

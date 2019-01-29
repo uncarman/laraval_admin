@@ -3,13 +3,10 @@
 
 @section('content')
 
-    <link rel="stylesheet" href="http://www.jq22.com/demo/datepicker201809181248/css/datepicker.css">
-    <script src="http://www.jq22.com/demo/datepicker201809181248/js/datepicker.all.js"></script>
-    <style>
-        .big-echart {
-            width: 800px; height: 300px;
-        }
-    </style>
+    <div class="breadcrumb">
+        <li><a href="/dashboard">首页</a></li>
+        <li>控制面板</li>
+    </div>
 
     <!-- Default box -->
     <div class="box">

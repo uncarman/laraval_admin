@@ -6,7 +6,6 @@
     <div class="breadcrumb">
         <li><a href="/dashboard">首页</a></li>
         <li class="active">监测分析</li>
-        <li>电能监测</li>
     </div>
 
     <!-- Default box -->
@@ -177,21 +176,12 @@
 
             $scope.ch_datas_on = function () {
                 $scope.datas.leftOn = !$scope.datas.leftOn;
-                if($scope.datas.leftOn) {
-                    $("body").addClass("left-on");
-                } else {
-                    $("body").removeClass("left-on");
-                }
-                setTimeout(function () {
-                    $scope.summaryChart.resize();
-                    $scope.summaryPieChart.resize();
-                    $scope.dailyChart.resize();
-                }, 300);
+                global.init_left($scope);
             };
-
 
             $scope.init_page = function () {
                 global.init_top_menu();
+                global.init_left($scope);
                 // 初始化日历
                 $('#calendar').calendar({
                     ifSwitch: true, // 是否切换月份
