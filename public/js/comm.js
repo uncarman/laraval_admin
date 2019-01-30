@@ -1340,7 +1340,7 @@
         // 初始化最基本的scope
         init_base_scope: function ($scope) {
             $scope.base_init_page = function () {
-                global.init_top_menu();
+                global.init_top_menu($scope);
                 global.init_left($scope);
             };
 
@@ -1429,10 +1429,18 @@
         },
 
         // 顶部菜单加高亮
-        init_top_menu : function(){
+        init_top_menu : function($scope){
             try{
-                var page = window.location.pathname.split("/")[2];
-                $(".top-"+page).addClass("active");
+                var pages = window.location.pathname.split("/");
+                var curPage = "";
+                // 检查是否包含buildingId
+                if(parseInt(pages[1]) == pages[1]) {
+                    $scope.datas.buildingId = pages[1];
+                    curPage = pages[2];
+                } else {
+                    curPage = pages[1];
+                }
+                $(".top-"+curPage).addClass("active");
             } catch (e) {
 
             }

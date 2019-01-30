@@ -109,15 +109,7 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>日期</th>
-                                <th>照明与插座</th>
-                                <th>照明与插座密度</th>
-                                <th>空调用电</th>
-                                <th>空调用电密度</th>
-                                <th>动力用电</th>
-                                <th>动力用电密度</th>
-                                <th>特殊用电</th>
-                                <th>特殊用电密度</th>
+                                <th ng-repeat="t in datas.summaryTableTitles"></th>
                                 <th>总费用</th>
                             </tr>
                             </thead>
@@ -158,8 +150,8 @@
             let datas = {
                 leftOn: true,
                 datePickerClassName: ".J-datepicker-range-day",
-                fromDate: "2019-01-01",
-                toDate: "2019-01-29",
+                fromDate: moment().format("YYYY-MM")+"-01",
+                toDate: moment().format("YYYY-MM-DD"),
 
                 dgt: global.request("dgt"),
 
@@ -175,64 +167,7 @@
                     internationalValue: 0.15,  // 国际能耗
                 },
 
-                summaryChartDatas: [
-                    {
-                        datas: [],
-                        key: "date",
-                        unit: "kwh",
-                        name: "照明与插座",
-                        val: "fee",
-                    },
-                    {
-                        datas: [],
-                        key: "date",
-                        unit: "kwh",
-                        name: "空调用电",
-                        val: "fee",
-                    },
-                    {
-                        datas: [],
-                        key: "date",
-                        unit: "kwh",
-                        name: "动力用电",
-                        val: "fee",
-                    },
-                    {
-                        datas: [],
-                        key: "date",
-                        unit: "kwh",
-                        name: "特殊用电",
-                        val: "fee",
-                    }
-                ],
-
-                summaryPieDatas: [
-                    {
-                        datas: "",
-                        unit: "kwh",
-                        name: "照明与插座",
-                        val: "fee",
-                    },
-                    {
-                        datas: "",
-                        unit: "kwh",
-                        name: "空调用电",
-                        val: "fee",
-                    },
-                    {
-                        datas: "",
-                        unit: "kwh",
-                        name: "动力用电",
-                        val: "fee",
-                    },
-                    {
-                        datas: "",
-                        unit: "kwh",
-                        name: "特殊用电",
-                        val: "fee",
-                    }
-                ],
-
+                summaryTableTitles: [],
                 summaryTableDatas: [],
             };
             $.extend(datas, settings.default_datas);
@@ -241,15 +176,27 @@
             $scope = global.init_base_scope($scope);
 
             $scope.init_page = function () {
-                global.init_top_menu();
+                global.init_top_menu($scope);
                 global.init_left($scope);
                 $scope.init_datepicker($scope.datas.datePickerClassName);
                 console.log("init_page");
 
                 $scope.dailyChart = echarts.init(document.getElementById("dailyChart"));
-                $scope.dailyChartDraw();
-                $scope.summaryChartTable();
+                $scope.getDatas();
             };
+
+            $scope.refresh_datas = function () {
+                $scope.datas.fromDate = $($scope.datas.datePickerClassName).find("input").eq(0).val();
+                $scope.datas.toDate = $($scope.datas.datePickerClassName).find("input").eq(1).val();
+                $scope.getDatas();
+            }
+
+            $scope.getDatas = function () {
+                $scope.ajaxAmmeterGroupsSummaryDailyByType()
+                    .then($scope.dailyChartDraw)
+                    .then($scope.summaryChartTable)
+                    .catch($scope.ajax_catch);
+            }
 
             var opts = {
                 color: settings.colors,
@@ -262,7 +209,8 @@
                 calculable : true,
                 xAxis : [
                     {
-                        type : 'time',
+                        type : 'category',
+                        data:[]
                     }
                 ],
                 yAxis : [
@@ -280,20 +228,67 @@
 //                    },
                 ]
             };
-            $scope.dailyChartDraw = function () {
+            $scope.dailyChartDraw = function (data) {
+                console.log(data);
                 var opt = angular.copy(opts);
-                for(var i =0; i<4; i++) {
-                    var d = [];
-                    for(var j=0; j<24; j++) {
-                        d.push((Math.random()*700 + 1200 - i*300).toFixed(2));
-                    }
-                    opt.series[i].data = d;
+                for(var i=0; i<moment(data.result.to).diff(moment(data.result.from), "days"); i++) {
+                    opt.xAxis[0].data.push(moment(data.result.from).add(i, "day").format("YYYY-MM-DD"));
                 }
-                $scope.dailyChart.setOption(opt, true);
-                $scope.dailyChart.resize();
+                var legend_data = [];
+                data.result["dailyDatas"].map(function (d) {
+                    legend_data.push(d["name"]);
+                    var tmpSeries = {
+                        name: d["name"],
+                        type:'line',
+                        stack: '总量',
+                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                        data: fmtEChartData(opt.xAxis[0].data, d),
+                    };
+                    opt.series.push(tmpSeries);
+                });
+                opt.legend.data = legend_data;
+                console.log(opt);
+                global.drawEChart($scope.dailyChart, opt);
+                return data;
             };
+            function fmtEChartData (categroys, data) {
+                var tmpSeriesData = [];
+                for (var i in categroys) {
+                    for (var j in data.datas) {
+                        if (data.datas[j].key == categroys[i]) {
+                            tmpSeriesData.push(parseFloat(data.datas[j].val));
+                            break;
+                        }
+                    }
+                    tmpSeriesData.push(0);
+                }
+                return tmpSeriesData;
+            }
+            $scope.ajaxAmmeterGroupsSummaryDailyByType = function () {
+                var param = {
+                    _method: 'get',
+                    _url: "/" + $scope.datas.buildingId + "/monitor/ajaxAmmeterGroupsSummaryDaily/" + $scope.datas.dgt,
+                    _param: {
+                        from : $scope.datas.fromDate,
+                        to: $scope.datas.toDate,
+                    }
+                };
+                return global.return_promise($scope, param);
+            }
 
-            $scope.summaryChartTable = function () {
+            $scope.summaryChartTable = function (data) {
+                $scope.datas.summaryTableTitles = ["日期"];
+                $scope.datas.summaryTableDatas = [];
+
+                for(var i=0; i<moment(data.result.to).diff(moment(data.result.from), "days"); i++) {
+                    $scope.datas.summaryTableDatas.push([moment(data.result.from).add(i, "day").format("YYYY-MM-DD")]);
+                }
+
+                data.result["dailyDatas"].map(function (d) {
+                    $scope.datas.summaryTableTitles[d["name"]] = "";
+                    $scope.datas.summaryTableDatas.push()
+                });
+                
                 $scope.datas.summaryTableDatas = [];
                 for(var i = 0; i< moment($scope.datas.toDate).diff($scope.datas.fromDate, 'days'); i ++) {
                     var e = Math.random()*200 + 100;

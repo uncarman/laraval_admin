@@ -335,11 +335,49 @@ class BuildingService
 
 
     // 根据分组类型查询组内电表数据汇总
-    public function ajaxAmmeterGroupsSummaryDaily($buildingId, $groupTypeId, $from, $to) {
+    public function buildingAmmeterGroupsSummaryDaily($buildingId, $groupTypeId, $from, $to) {
         if(empty($buildingId) || empty($groupTypeId)) {
             return [];
         }
-        $sql = "";
+        $sql = "
+        SELECT
+            t.id,
+            max(t.gname) as name,
+            max(t.prop_area) as prop_area,
+            max(t.prop_num) as prop_num,
+            sum(t.val) as val,
+            t.record_date
+        from (
+            SELECT
+                dg.id,
+                dg.name as gname,
+                dg.prop_area,
+                dg.prop_num,
+                a.name as aname,
+                a.sn,
+                a.rate,
+                a.note,
+                ad.val,
+                ad.record_date
+            from device_group dg
+                LEFT JOIN device_group_map dgm on dg.id = dgm.device_group_id
+                LEFT JOIN ammeter a on a.id = dgm.device_id and dgm.device_type = 'ammeter'
+                LEFT JOIN (
+                    SELECT
+                        ammeter_id,
+                        max(positive_active_power) - min(positive_active_power) as val,
+                        DATE_FORMAT(recorded_at, '%Y-%m-%d') as record_date
+                    from ammeter_data
+                    GROUP BY ammeter_id, DATE_FORMAT(recorded_at, '%Y-%m-%d')
+                ) ad on ad.ammeter_id = a.id
+            where dg.building_id = :buildingId and dg.group_type = :groupType
+                and a.status = '正常'
+                and ad.record_date >= :from and ad.record_date <= :to
+            -- ORDER BY dg.id asc, a.id asc, ad.record_date asc
+        ) t
+        GROUP BY t.id, t.record_date
+        ORDER BY t.id asc, t.record_date asc
+        ";
         $res = $this->db->select($sql, ["buildingId" => $buildingId, "groupType" => $groupTypeId, "from" => $from, "to" => $to]);
         return empty($res) ? [] : $res;
     }

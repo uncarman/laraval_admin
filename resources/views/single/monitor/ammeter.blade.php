@@ -256,8 +256,8 @@
             let datas = {
                 leftOn: true,
                 datePickerClassName: ".J-datepicker-range-day",
-                fromDate: "2019-01-01",
-                toDate: "2019-01-29",
+                fromDate: moment().format("YYYY-MM")+"-01",
+                toDate: moment().format("YYYY-MM-DD"),
 
                 startYear: "2018",
 
@@ -368,7 +368,7 @@
             $scope = global.init_base_scope($scope);
 
             $scope.init_page = function () {
-                global.init_top_menu();
+                global.init_top_menu($scope);
                 global.init_left($scope, function () {
                     setTimeout(function(){
                         $scope.summaryChart.resize();

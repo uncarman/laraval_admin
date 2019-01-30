@@ -163,6 +163,10 @@
             // 当前页面默认值
             let datas = {
                 leftOn: true,
+                datePickerClassName: ".J-datepicker-range-day",
+                fromDate: moment().format("YYYY-MM")+"-01",
+                toDate: moment().format("YYYY-MM-DD"),
+
             };
             $.extend(datas, settings.default_datas);
             $scope.datas = datas;
@@ -179,7 +183,7 @@
             };
 
             $scope.init_page = function () {
-                global.init_top_menu();
+                global.init_top_menu($scope);
                 global.init_left($scope, function () {
                     setTimeout(function(){
                         $scope.summaryChart.resize();
@@ -187,7 +191,7 @@
                         $scope.dailyChart.resize();
                     }, 500);
                 });
-                $scope.init_datepicker('.J-datepicker-range-day');
+                $scope.init_datepicker($scope.datas.datePickerClassName);
                 console.log("init_page");
 
                 $scope.summaryChart = echarts.init(document.getElementById("summaryChart"));
