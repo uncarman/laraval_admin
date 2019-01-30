@@ -262,11 +262,7 @@
                 calculable : true,
                 xAxis : [
                     {
-                        type : 'category',
-                        boundaryGap : false,
-                        data : ['01','02','03','04','05','06','07','08','09','10',
-                            '11','12','13','14','15','16','17','18','19','20',
-                            '21','22','23','24']
+                        type : 'time',
                     }
                 ],
                 yAxis : [
@@ -275,34 +271,13 @@
                     }
                 ],
                 series : [
-                    {
-                        name:'照明与插座',
-                        type:'line',
-                        stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                        data:[]
-                    },
-                    {
-                        name:'空调用电',
-                        type:'line',
-                        stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                        data:[]
-                    },
-                    {
-                        name:'动力用电',
-                        type:'line',
-                        stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                        data:[]
-                    },
-                    {
-                        name:'特殊用电',
-                        type:'line',
-                        stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                        data:[]
-                    }
+//                    {
+//                        name:'照明与插座',
+//                        type:'line',
+//                        stack: '总量',
+//                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
+//                        data:[]
+//                    },
                 ]
             };
             $scope.dailyChartDraw = function () {

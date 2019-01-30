@@ -24,7 +24,7 @@ class GroupController extends Controller
         $res = [];
         $tmp = [];
         if(!empty($building_id)) {
-            $group_types = $this->bs->instance("bdDb")->getBuildingGroupTypes($building_id);
+            $group_types = $this->bs->instance("db")->getBuildingGroupTypes($building_id);
             if(!empty($group_types)) {
                 foreach ($group_types as $group) {
                     $_res = [
@@ -32,7 +32,7 @@ class GroupController extends Controller
                         "name" => $group->tcname,
                         "children" => []
                     ];
-                    $datas = $this->bs->instance("bdDb")->getBuildingGroups($building_id, $group->group_type);
+                    $datas = $this->bs->instance("db")->getBuildingGroups($building_id, $group->group_type);
                     if (!empty($datas)) {
                         foreach ($datas as $d) {
                             if ($d->parent_id == 0) {

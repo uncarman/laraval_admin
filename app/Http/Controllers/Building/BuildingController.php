@@ -19,22 +19,22 @@ class BuildingController extends Controller
     public function index(Request $request) {
         $name = $request->get('name', "");
         $currPage = $request->get('page', 1);
-        $buildings = new PageService($this->bs->instance("bdDb")->getBuildingList($name), 15, $currPage);
+        $buildings = new PageService($this->bs->instance("db")->getBuildingList($name), 15, $currPage);
         return view('building.index', compact("buildings"));
     }
 
     public function show($id) {
-        $building = $this->bs->instance("bdDb")->getBuildingDetail($id);
+        $building = $this->bs->instance("db")->getBuildingDetail($id);
         return view('building.view', compact("building"));
     }
 
     public function edit($id) {
-        $building = $this->bs->instance("bdDb")->getBuildingDetail($id);
+        $building = $this->bs->instance("db")->getBuildingDetail($id);
         return view('building.edit', compact("building"));
     }
 
     public function create($id) {
-        $building = $this->bs->instance("bdDb")->getBuildingDetail($id);
+        $building = $this->bs->instance("db")->getBuildingDetail($id);
         return view('building.create');
     }
 
@@ -47,7 +47,7 @@ class BuildingController extends Controller
 
 
     public function update(Request $request, $id) {
-        $building = $this->bs->instance("bdDb")->getBuildingDetail($id);
+        $building = $this->bs->instance("db")->getBuildingDetail($id);
     }
 
     public function destroy($id) {

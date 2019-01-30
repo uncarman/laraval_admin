@@ -332,4 +332,16 @@ class BuildingService
         $res = $this->db->select($sql, ["buildingId" => $building_id, "groupType" => $group_type]);
         return empty($res) ? [] : $res;
     }
+
+
+    // 根据分组类型查询组内电表数据汇总
+    public function ajaxAmmeterGroupsSummaryDaily($buildingId, $groupTypeId, $from, $to) {
+        if(empty($buildingId) || empty($groupTypeId)) {
+            return [];
+        }
+        $sql = "";
+        $res = $this->db->select($sql, ["buildingId" => $buildingId, "groupType" => $groupTypeId, "from" => $from, "to" => $to]);
+        return empty($res) ? [] : $res;
+    }
+
 }

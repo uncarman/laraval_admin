@@ -10,7 +10,7 @@ class BuildingServiceApi {
 
     ////////////////////// 实例化 service ////////////////////////////
     function instance($serv, $type=null) {
-        if($serv == "bdDb") {
+        if($serv == "db") {
             $this->bdDb = empty($this->bdDb) ? new bdDb() : $this->bdDb;
             return $this->bdDb;
         } else {

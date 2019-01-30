@@ -26,8 +26,11 @@ class MonitorAmmeterController extends Controller
         return view('single.monitor.ammeter_by_type');
     }
 
-    public function ajaxAmmeterData(Request $request)
+    public function ajaxAmmeterGroupsSummaryDailyByType($buildingId, $groupTypeId, Request $request)
     {
-        return view('single.monitor.ammeter_by_type');
+        $from = $request->get("from", date("Y-m-01"));
+        $to = $request->get("to", date("Y-m-d"));
+        $groups = $this->bs->instance("db")->getBuildingAmmeterGroupsSummaryDailyByType($buildingId, $groupTypeId, $from, $to);
+        return makeSuccess($groups);
     }
 }

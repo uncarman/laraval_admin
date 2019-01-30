@@ -42,6 +42,9 @@ Route::group(['prefix' => '/{buildingId}/monitor', 'middleware' => ['auth']], fu
     Route::get('/ammeter', 'Monitor\MonitorAmmeterController@index');
     Route::get('/ammeterByType', 'Monitor\MonitorAmmeterController@ammeterByType');
     Route::get('/watermeter', 'Monitor\MonitorWatermeterController@index');
+
+    Route::get('/ajaxAmmeterGroupTypes/{groupTypeId}', 'Monitor\MonitorSummaryController@ajaxAmmeterGroupTypes');
+
 });
 Route::group(['prefix' => '/{buildingId}/statistics', 'middleware' => ['auth']], function () {
     Route::get('/summary', 'Statistics\StatisticsSummaryController@index');

@@ -35,7 +35,7 @@ class ApiController extends Controller
         if(empty($request->get("positive_active_power")) || empty($request->get("reverse_active_power"))) {
             return makeFailedMsg("缺少数据");
         }
-        $meter = $this->bs->instance("bdDb")->getAmmeterBySn($collector_sn, $meter_sn);
+        $meter = $this->bs->instance("db")->getAmmeterBySn($collector_sn, $meter_sn);
         if($meter) {
             $data = [
                 "ammeter_id" => $meter->id,
@@ -44,7 +44,7 @@ class ApiController extends Controller
                 "other_data" => $request->get("other_data", ""),
                 "recorded_at" => $request->get("record_time", date("Y-m-d H:i:s")),
             ];
-            $this->bs->instance("bdDb")->insertAmmeterData($data);
+            $this->bs->instance("db")->insertAmmeterData($data);
             return makeSuccessMsg();
         } else {
             return makeFailedMsg("没有对应表: meter_sn:".$meter_sn." collector_sn:".$collector_sn);
@@ -59,7 +59,7 @@ class ApiController extends Controller
         if(empty($request->get("indication"))) {
             return makeFailedMsg("缺少数据");
         }
-        $meter = $this->bs->instance("bdDb")->getWatermeterBySn($collector_sn, $meter_sn);
+        $meter = $this->bs->instance("db")->getWatermeterBySn($collector_sn, $meter_sn);
         if($meter) {
             $data = [
                 "watermeter_id" => $meter->id,
@@ -67,7 +67,7 @@ class ApiController extends Controller
                 "other_data" => $request->get("other_data", ""),
                 "recorded_at" => $request->get("record_time", date("Y-m-d H:i:s")),
             ];
-            $this->bs->instance("bdDb")->insertWatermeterData($data);
+            $this->bs->instance("db")->insertWatermeterData($data);
             return makeSuccessMsg();
         } else {
             return makeFailedMsg("没有对应表: meter_sn:".$meter_sn." collector_sn:".$collector_sn);
@@ -82,7 +82,7 @@ class ApiController extends Controller
         if(empty($request->get("indication"))) {
             return makeFailedMsg("缺少数据");
         }
-        $meter = $this->bs->instance("bdDb")->getEnergymeterBySn($collector_sn, $meter_sn);
+        $meter = $this->bs->instance("db")->getEnergymeterBySn($collector_sn, $meter_sn);
         if($meter) {
             $data = [
                 "energymeter_id" => $meter->id,
@@ -90,7 +90,7 @@ class ApiController extends Controller
                 "other_data" => $request->get("other_data", ""),
                 "recorded_at" => $request->get("record_time", date("Y-m-d H:i:s")),
             ];
-            $this->bs->instance("bdDb")->insertEnergymeterData($data);
+            $this->bs->instance("db")->insertEnergymeterData($data);
             return makeSuccessMsg();
         } else {
             return makeFailedMsg("没有对应表: ammeter_sn:".$meter_sn." collector_sn:".$collector_sn);
