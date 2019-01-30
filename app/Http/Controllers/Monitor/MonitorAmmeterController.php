@@ -25,4 +25,9 @@ class MonitorAmmeterController extends Controller
     {
         return view('single.monitor.ammeter_by_type');
     }
+
+    public function ajaxAmmeterData(Request $request)
+    {
+        return view('single.monitor.ammeter_by_type');
+    }
 }

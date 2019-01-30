@@ -5,7 +5,8 @@
     <div class="breadcrumb">
         <li><a href="/dashboard">首页</a></li>
         <li><a href="../monitor/summary">监测分析</a></li>
-        <li class="active">电能监测</li>
+        <li><a href="../monitor/ammeter">电能监测</a></li>
+        <li class="active">总用电概述</li>
     </div>
 
     <!-- Default box -->
@@ -19,10 +20,38 @@
                 <ul class="leftNav">
                     <li class="title"><span class="glyphicon glyphicon-flash"></span> 电能监测</li>
                     <li class="active"><span class="glyphicon glyphicon-star"></span> 总用电概述</li>
-                    <li><a href="../monitor/ammeterByType?dgt=9"><span class="glyphicon glyphicon-tint"></span> 按能耗分项监测</a></li>
-                    <li><a href="../monitor/ammeterByType?dgt=10"><span class="glyphicon glyphicon-fire"></span> 按建筑区域监测</a></li>
-                    <li><a href="../monitor/ammeterByType?dgt=11"><span class="glyphicon glyphicon-cloud"></span> 按组织机构监测</a></li>
-                    <li><a href="../monitor/ammeteByTyper?dgt=12"><span class="glyphicon glyphicon-lamp"></span> 按自定义类别监测</a></li>
+                    <li ng-class="datas.dgt==9 ? 'active' : ''">
+                        <a href="../monitor/ammeterByType?dgt=9" ng-if="datas.dgt!=9">
+                            <span class="glyphicon glyphicon-tint"></span> 按能耗分项监测
+                        </a>
+                        <b ng-if="datas.dgt==9">
+                            <span class="glyphicon glyphicon-tint"></span> 按能耗分项监测
+                        </b>
+                    </li>
+                    <li ng-class="datas.dgt==10 ? 'active' : ''">
+                        <a href="../monitor/ammeterByType?dgt=10" ng-if="datas.dgt!=10">
+                            <span class="glyphicon glyphicon-fire"></span> 按建筑区域监测
+                        </a>
+                        <b ng-if="datas.dgt==10">
+                            <span class="glyphicon glyphicon-fire"></span> 按建筑区域监测
+                        </b>
+                    </li>
+                    <li ng-class="datas.dgt==11 ? 'active' : ''">
+                        <a href="../monitor/ammeterByType?dgt=11" ng-if="datas.dgt!=11">
+                            <span class="glyphicon glyphicon-cloud"></span> 按组织机构监测
+                        </a>
+                        <b ng-if="datas.dgt==11">
+                            <span class="glyphicon glyphicon-cloud"></span> 按组织机构监测
+                        </b>
+                    </li>
+                    <li ng-class="datas.dgt==12 ? 'active' : ''">
+                        <a href="../monitor/ammeterByType?dgt=12" ng-if="datas.dgt!=12">
+                            <span class="glyphicon glyphicon-lamp"></span> 按自定义类别监测
+                        </a>
+                        <b ng-if="datas.dgt==12">
+                            <span class="glyphicon glyphicon-lamp"></span> 按自定义类别监测
+                        </b>
+                    </li>
                 </ul>
             </div>
 
@@ -340,7 +369,13 @@
 
             $scope.init_page = function () {
                 global.init_top_menu();
-                global.init_left($scope);
+                global.init_left($scope, function () {
+                    setTimeout(function(){
+                        $scope.summaryChart.resize();
+                        $scope.summaryPieChart.resize();
+                        $scope.dailyChart.resize();
+                    }, 500);
+                });
                 $scope.init_datepicker($scope.datas.datePickerClassName);
                 console.log("init_page");
 
@@ -420,7 +455,7 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['照明与插座','空调用电','动力用电','特殊用电']
+                    data:[]
                 },
                 calculable : true,
                 xAxis : [
@@ -514,7 +549,6 @@
                         d.push({ "val": (Math.random()*700 + 1200 - i*300).toFixed(2), "key": moment($scope.datas.startYear).add("month", j).format("YYYY-MM")});
                     }
                     $scope.datas.summaryChartDatas[i].datas = d;
-
                 }
 
                 // 将原始数据画成图表

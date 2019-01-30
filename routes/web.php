@@ -24,6 +24,7 @@ Route::get('/sam/fun1', ['uses'=>'SamController@fun1']);
 Route::get('/sam/fun2', ['uses'=>'SamController@fun2']);
 
 
+
 //管理员账号管理
 Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');

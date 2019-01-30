@@ -169,18 +169,31 @@
 
             $scope.ch_datas_on = function () {
                 $scope.datas.leftOn = !$scope.datas.leftOn;
-                global.init_left($scope);
+                global.init_left($scope, function () {
+                    setTimeout(function(){
+                        $scope.summaryChart.resize();
+                        $scope.summaryPieChart.resize();
+                        $scope.dailyChart.resize();
+                    }, 500);
+                });
             };
 
             $scope.init_page = function () {
                 global.init_top_menu();
-                global.init_left($scope);
+                global.init_left($scope, function () {
+                    setTimeout(function(){
+                        $scope.summaryChart.resize();
+                        $scope.summaryPieChart.resize();
+                        $scope.dailyChart.resize();
+                    }, 500);
+                });
                 $scope.init_datepicker('.J-datepicker-range-day');
                 console.log("init_page");
 
                 $scope.summaryChart = echarts.init(document.getElementById("summaryChart"));
                 $scope.summaryPieChart = echarts.init(document.getElementById("summaryPieChart"));
                 $scope.dailyChart = echarts.init(document.getElementById("dailyChart"));
+
                 $scope.dailyChartDraw();
                 $scope.summaryChartDraw();
                 $scope.summaryPieDraw();

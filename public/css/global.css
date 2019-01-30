@@ -23,6 +23,8 @@ h3 { color: #000; font-weight: bold; font-size: 14px; vertical-align: middle; li
 .main-header .nav>li { padding: 1px; }
 .main-header .nav>li.active { border: 1px solid #fff; border-radius: 5px; }
 .main-header .nav>li a { margin-top: 0px; }
+.main-header .nav>li:hover .dropdown-menu { display: block; }
+
 
 .breadcrumb { margin-bottom: 0px; height: 35px;
  border-top: 1px solid #fff; border-bottom: 1px solid #5B819F;
@@ -72,7 +74,7 @@ h3 { color: #000; font-weight: bold; font-size: 14px; vertical-align: middle; li
 .left-on .box-left ul>li .glyphicon { margin-right: 5px; }
 .left-on .box-left ul>li>a { color: #666; display: inline-block; width: 100%; }
 .left-on .box-left ul>li>a:hover { color: #0d6aad; font-weight: bold; }
-.left-on .box-left ul>li.active { color:#0d6aad; font-weight: bold; }
+.left-on .box-left ul>li.active { color:#0d6aad; font-weight: bold; background: #D7F5F8; }
 .left-on .box-left ul>li:last-child { border-bottom: 1px solid #6094D0; }
 
 .left-on .box-right { margin-left: 240px; }
