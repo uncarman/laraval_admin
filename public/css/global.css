@@ -80,6 +80,7 @@ h3 { color: #000; font-weight: bold; font-size: 14px; vertical-align: middle; li
 .left-on .mainbody {
     background-position: -57px 0; transition: all .3s linear;
 }
+.no-bg .mainbody { background: none; }
 .split-line { min-height: 300px; width: 10px; position: absolute;
      left: 15px; cursor: pointer; z-index: 1000;
      background:url("/imgs/box_left_arrow.png") center top no-repeat;

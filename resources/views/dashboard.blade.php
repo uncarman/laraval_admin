@@ -1,5 +1,4 @@
-@extends('layouts.default')
-@section('page_title', '控制面板')
+@extends('layouts.multiple')
 
 @section('content')
 

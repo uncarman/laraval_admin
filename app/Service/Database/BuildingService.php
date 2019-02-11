@@ -17,6 +17,23 @@ class BuildingService
         }
     }
 
+    public function getUserBuildingList($userId, $name="") {
+        if (!empty($name)) {
+            $where = " and b.name like '%" . $name . "%'";
+        } else {
+            $where = "";
+        }
+        $sql = "
+            select
+                b.*
+            from building_base b
+            LEFT JOIN user_building_map bm on bm.building_id = b.id
+            where bm.user_id = :userId
+        " . $where;
+        $res = $this->db->select($sql, ["userId" => $userId]);
+        return empty($res) ? [] : $res;
+    }
+
     public function getBuildingList($name = "")
     {
         if (!empty($name)) {

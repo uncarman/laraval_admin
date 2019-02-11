@@ -33,7 +33,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
     Route::get('/ajax_get_meters', 'HomeController@ajaxGetMeters')->name('ajaxGetMeters');
     Route::get('/ajax_get_meter_datas', 'HomeController@ajaxGetMeterDatas')->name('ajaxGetMeterDatas');
     // 分组管理
-    Route::get('/groups', 'HomeController@dashboard')->name('dashboard');
+    //Route::get('/groups', 'HomeController@dashboard')->name('dashboard');
 });
 
 //////////////////  单个建筑 //////////////////
@@ -81,3 +81,9 @@ Route::group(['prefix' => '/{buildingId}/settings', 'middleware' => ['auth']], f
 });
 
 //////////////////  多个建筑 //////////////////
+Route::group(['prefix' => '', 'middleware' => ['auth']], function () {
+    Route::get('/map', 'Gather\GatherController@map');
+    Route::get('/list', 'Gather\GatherController@list');
+
+    Route::get('/ajaxBuildingList', 'Gather\GatherController@ajaxBuildingList');
+});
