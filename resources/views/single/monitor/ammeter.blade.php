@@ -33,31 +33,6 @@
             <div class="box-right">
                 <ul class="nav nav-tabs tftab">
                     <li><span class="title"><span class="glyphicon glyphicon-star-empty"></span> 总用电概况 </span></li>
-                    <li class="pull-right disabled form-inline">
-                        查询条件:
-                        <select class="form-control mr10" ng-model="datas.query.type">
-                            <option ng-repeat="t in datas.opts.types"
-                                    ng-value="t.val"
-                                    ng-bind="t.name"
-                                    ng-selected="t.val == datas.query.type"></option>
-                        </select>
-                        从:
-                        <span class="c-datepicker-date-editor J-datepicker-range-day">
-                            <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.fromDate">
-                        </span>
-                        到:
-                        <span class="c-datepicker-date-editor J-datepicker-range-day mr10">
-                            <input placeholder="结束日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.toDate">
-                        </span>
-                        同比数据:
-                        <select class="form-control _compareTos" ng-model="datas.query.compareTo">
-                            <option ng-repeat="t in datas.opts.compareTos"
-                                    ng-value="t.val"
-                                    ng-bind="t.name"
-                                    ng-selected="t.val == datas.query.compareTo"></option>
-                        </select>
-                        <button ng-click="refresh_datas();" class="btn btn-primary"><spam class="glyphicon glyphicon-refresh"></spam> 更新</button>
-                    </li>
                 </ul>
                 <div class="nav-tabContents">
                     <div class="row summaryPanel">
@@ -156,8 +131,39 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="divider"></div>
+                <div class="divider" style="margin:20px 0;"></div>
+
+                <ul class="nav nav-tabs tftab">
+                    <li><span class="title"><span class="glyphicon glyphicon-star-empty"></span> 按时间区间概况 </span></li>
+                    <li class="pull-right disabled form-inline">
+                        查询条件:
+                        <select class="form-control mr10" ng-model="datas.query.type">
+                            <option ng-repeat="t in datas.opts.types"
+                                    ng-value="t.val"
+                                    ng-bind="t.name"
+                                    ng-selected="t.val == datas.query.type"></option>
+                        </select>
+                        从:
+                        <span class="c-datepicker-date-editor J-datepicker-range-day">
+                            <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.fromDate">
+                        </span>
+                        到:
+                        <span class="c-datepicker-date-editor J-datepicker-range-day mr10">
+                            <input placeholder="结束日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.toDate">
+                        </span>
+                        同比数据:
+                        <select class="form-control _compareTos" ng-model="datas.query.compareTo">
+                            <option ng-repeat="t in datas.opts.compareTos"
+                                    ng-value="t.val"
+                                    ng-bind="t.name"
+                                    ng-selected="t.val == datas.query.compareTo"></option>
+                        </select>
+                        <button ng-click="refresh_datas();" class="btn btn-primary"><spam class="glyphicon glyphicon-refresh"></spam> 更新</button>
+                    </li>
+                </ul>
+                <div class="nav-tabContents">
 
                     <div>
                         <h3 class="pull-left">图表展示:</h3>
@@ -209,6 +215,7 @@
                     </div>
 
                 </div>
+
             </div>
 
         </div>
