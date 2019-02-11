@@ -35,39 +35,17 @@
                             <b>选择日期: &nbsp; </b>
                             <span class="c-datepicker-date-editor J-datepicker-range-day">
                                 <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
-                                <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" value="">
+                                <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.fromDate">
                                 <span class="c-datepicker-range-separator">-</span>
-                                <input placeholder="结束日期" name="" class="c-datepicker-data-input only-date" value="">
+                                <input placeholder="结束日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.toDate">
                             </span>
                             <button ng-click="refresh_datas();" class="btn btn-primary"><spam class="glyphicon glyphicon-refresh"></spam> 更新</button>
                         </span>
                     </li>
                 </ul>
                 <div class="nav-tabContents">
-                    <div class="row summaryPanel">
-                        <div class="col-xs-3">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <p class="t1">
-                                        <em ng-bind="datas.summaryData.totalName">--</em>
-                                        <b ng-bind="datas.summaryData.total | number : 2" ng-class="compareClass(datas.summaryData.total, 'd');">--</b>
-                                        <i ng-bind="datas.summaryData.totalUnit">--</i>
-                                    </p>
-                                    <p class="t2" ng-class="compareClass(datas.summaryData.totalCompareMonth, 't');">
-                                        <em>环比:</em>
-                                        <span class="glyphicon" ng-class="compareClass(datas.summaryData.totalCompareMonth, 'i');"></span>
-                                        <b ng-bind="compareValue(datas.summaryData.totalCompareMonth);">--</b>
-                                    </p>
-                                    <p class="t3" ng-class="compareClass(datas.summaryData.totalCompareYear, 't');">
-                                        <em>2018年同比:</em>
-                                        <span class="glyphicon" ng-class="compareClass(datas.summaryData.totalCompareYear, 'i');"></span>
-                                        <b ng-bind="compareValue(datas.summaryData.totalCompareYear);">--</b>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-9">
+                    <div class="row summaryPanel" style="display: none;">
+                        <div class="col-xs-12">
                             <div class="row">
                                 <div class="col-xs-3">
                                     <p class="t1">
@@ -141,7 +119,7 @@
                         </div>
                     </div>
 
-                    <div class="divider"></div>
+                    <div class="divider" style="display: none;"></div>
 
                     <div>
                         <h3 class="pull-left">图表展示:</h3>
@@ -160,9 +138,11 @@
                         </div>
                         <div class="clearfix"></div>
 
+                        <div id="summaryChart" class="pull-right" style="width:100%; height:400px;"></div>
+
                         <div id="dailyChart" style="width:100%; height:360px; display: none;"></div>
-                        <div id="summaryPieChart" class="pull-left" style="width:28%; height:400px;"></div>
-                        <div id="summaryChart" class="pull-right" style="width:70%; height:400px;"></div>
+                        <div id="summaryPieChart" class="pull-left" style="width:28%; height:400px; display: none;"></div>
+                        {{--<div id="summaryChart" class="pull-right" style="width:70%; height:400px;"></div>--}}
                         <div class="clearfix"></div>
 
                     </div>

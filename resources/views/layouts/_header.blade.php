@@ -19,6 +19,7 @@
                     <span class="sr-only"> </span>
                 </a>
                 <ul class="dropdown-menu">
+                    <li><a href="../monitor/summary">总体用能概述</a></li>
                     <li><a href="../monitor/ammeter">电能监测</a></li>
                     <li><a href="../monitor/watermeter">水量监测</a></li>
                     <li><a href="../monitor/gasmeter">天然气监测</a></li>
@@ -34,8 +35,8 @@
                     <span class="sr-only"> </span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">能耗统计</a></li>
-                    <li><a href="#">费用分析</a></li>
+                    <li><a href="../statistics/summary">能耗统计</a></li>
+                    <li><a href="../statistics/summaryFee">费用分析</a></li>
                     <li><a href="#">评价能耗</a></li>
                 </ul>
             </li>
@@ -65,7 +66,7 @@
             </li>
 
             <li class="btn-group top-settings">
-                <a href="../settings/summary" class=""><span class="glyphicon glyphicon-cog"></span> 系统配置</a>
+                <a href="../settings/group" class=""><span class="glyphicon glyphicon-cog"></span> 系统配置</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only"> </span>

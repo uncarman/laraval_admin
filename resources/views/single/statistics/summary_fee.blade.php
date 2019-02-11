@@ -17,19 +17,41 @@
             <div class="box-left">
                 <ul class="leftNav">
                     <li class="title"><span class="glyphicon glyphicon-calendar"></span> 数据统计</li>
-                    <li class="active"><a><span class="glyphicon glyphicon-star"></span> 总体能耗统计</a></li>
-                    <li><a ng-click="pageJump('../statistics/summaryFee');"><span class="glyphicon glyphicon-star"></span> 总体费用分析</a></li>
+                    <li><a ng-click="pageJump('../statistics/summary');"><span class="glyphicon glyphicon-star"></span> 总体能耗统计</a></li>
+                    <li class="active"><a><span class="glyphicon glyphicon-star"></span> 总体费用分析</a></li>
                 </ul>
             </div>
 
             <div class="box-right">
 
                 <ul class="nav nav-tabs tftab">
-                    <li><span class="title"><span class="glyphicon glyphicon-star-empty"></span> 总能耗统计 </span></li>
+                    <li><span class="title"><span class="glyphicon glyphicon-star-empty"></span> 总体费用分析 </span></li>
                 </ul>
                 <div class="nav-tabContents">
                     <div class="row summaryPanel">
-                        <div class="col-xs-12">
+                        <div class="col-xs-3">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p class="t1">
+                                        <em ng-bind="datas.summaryData.totalName">--</em>
+                                        <b ng-bind="datas.summaryData.total | number : 2" ng-class="compareClass(datas.summaryData.total, 'd');">--</b>
+                                        <i ng-bind="datas.summaryData.totalUnit">--</i>
+                                    </p>
+                                    <p class="t2" ng-class="compareClass(datas.summaryData.totalCompareMonth, 't');">
+                                        <em>环比:</em>
+                                        <span class="glyphicon" ng-class="compareClass(datas.summaryData.totalCompareMonth, 'i');"></span>
+                                        <b ng-bind="compareValue(datas.summaryData.totalCompareMonth);">--</b>
+                                    </p>
+                                    <p class="t3" ng-class="compareClass(datas.summaryData.totalCompareYear, 't');">
+                                        <em>2018年同比:</em>
+                                        <span class="glyphicon" ng-class="compareClass(datas.summaryData.totalCompareYear, 'i');"></span>
+                                        <b ng-bind="compareValue(datas.summaryData.totalCompareYear);">--</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-9">
                             <div class="row">
                                 <div class="col-xs-3">
                                     <p class="t1">
@@ -102,6 +124,8 @@
                             </div>
                         </div>
                     </div>
+
+
                 </div>
 
                 <div class="divider" style="margin: 20px 0;"></div>
@@ -110,7 +134,7 @@
                     <li><span class="title"><span class="glyphicon glyphicon-star-empty"></span> 按时间区间概况 </span></li>
                     <li class="pull-right disabled">
                         <span>
-                            <b>选择日期: &nbsp; </b>
+                            <b>选择日期: </b>
                             <span class="c-datepicker-date-editor J-datepicker-range-day">
                                 <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
                                 <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.fromDate">
@@ -169,6 +193,7 @@
                     </div>
 
                 </div>
+
             </div>
 
         </div>
@@ -252,7 +277,7 @@
             $scope.ajaxMeterSummary = function () {
                 var param = {
                     _method: 'get',
-                    _url: "/" + $scope.datas.buildingId + "/statistics/ajaxMeterSummary",
+                    _url: "/" + $scope.datas.buildingId + "/statistics/ajaxMeterSummaryFee",
                     _param: {
                         from : $scope.datas.fromDate,
                         to: $scope.datas.toDate,

@@ -51,8 +51,13 @@ Route::group(['prefix' => '/{buildingId}/monitor', 'middleware' => ['auth']], fu
 });
 Route::group(['prefix' => '/{buildingId}/statistics', 'middleware' => ['auth']], function () {
     Route::get('/summary', 'Statistics\StatisticsSummaryController@index');
+    Route::get('/summaryFee', 'Statistics\StatisticsSummaryController@summaryFee');
+
     Route::get('/ammeter', 'Statistics\StatisticsAmmeterController@index');
     Route::get('/watermeter', 'Statistics\StatisticsWatermeterController@index');
+
+    Route::get('/ajaxMeterSummary', 'Statistics\StatisticsSummaryController@ajaxMeterSummary');
+    Route::get('/ajaxMeterSummaryFee', 'Statistics\StatisticsSummaryController@ajaxMeterSummaryFee');
 });
 Route::group(['prefix' => '/{buildingId}/warning', 'middleware' => ['auth']], function () {
     Route::get('/summary', 'Warning\WarningSummaryController@index');
