@@ -2,11 +2,13 @@
 
 @section('content')
 
-    <div class="breadcrumb">
-        <li><a href="/dashboard">首页</a></li>
-        <li><a href="../monitor/summary">监测分析</a></li>
-        <li><a href="../monitor/ammeter">电能监测</a></li>
-        <li class="active">总用电概述</li>
+    <div>
+        <ul class="breadcrumb">
+            <li ng-repeat="g in datas.guides"
+                ng-class="$index == datas.guides.length-1 ? 'active' : ''">
+                <a ng-click="pageJump(g.url)" ng-bind="g.name"></a>
+            </li>
+        </ul>
     </div>
 
     <!-- Default box -->
@@ -18,46 +20,35 @@
 
             <div class="box-left">
                 <ul class="leftNav">
-                    <li class="title"><span class="glyphicon glyphicon-flash"></span> 电能监测</li>
-                    <li><a href="../monitor/ammeter"><span class="glyphicon glyphicon-star"></span> 总用电概述</a></li>
-                    <li ng-class="datas.dgt==9 ? 'active' : ''">
-                        <a href="../monitor/ammeterByType?dgt=9" ng-if="datas.dgt!=9">
-                            <span class="glyphicon glyphicon-tint"></span> 按能耗分项监测
+                    <li class="title"><span class="glyphicon glyphicon-fire"></span> 电能监测</li>
+                    <li><a href="../monitor/ammeter"><span class="glyphicon glyphicon-star-empty"></span> 总用电概述</a></li>
+                    <li ng-repeat="t in datas.types" ng-class="datas.dgt==t.id ? 'active' : ''">
+                        <a ng-click="pageGoto(t.id);">
+                            <span class="glyphicon"
+                                ng-class="datas.dgt==t.id ? 'glyphicon-triangle-right' : 'glyphicon-menu-right'"></span> <em ng-bind="'按'+t.name+'监测'"></em>
                         </a>
-                        <b ng-if="datas.dgt==9">
-                            <span class="glyphicon glyphicon-tint"></span> 按能耗分项监测
-                        </b>
-                    </li>
-                    <li ng-class="datas.dgt==10 ? 'active' : ''">
-                        <a href="../monitor/ammeterByType?dgt=10" ng-if="datas.dgt!=10">
-                            <span class="glyphicon glyphicon-fire"></span> 按建筑区域监测
-                        </a>
-                        <b ng-if="datas.dgt==10">
-                            <span class="glyphicon glyphicon-fire"></span> 按建筑区域监测
-                        </b>
-                    </li>
-                    <li ng-class="datas.dgt==11 ? 'active' : ''">
-                        <a href="../monitor/ammeterByType?dgt=11" ng-if="datas.dgt!=11">
-                            <span class="glyphicon glyphicon-cloud"></span> 按组织机构监测
-                        </a>
-                        <b ng-if="datas.dgt==11">
-                            <span class="glyphicon glyphicon-cloud"></span> 按组织机构监测
-                        </b>
-                    </li>
-                    <li ng-class="datas.dgt==12 ? 'active' : ''">
-                        <a href="../monitor/ammeterByType?dgt=12" ng-if="datas.dgt!=12">
-                            <span class="glyphicon glyphicon-lamp"></span> 按自定义类别监测
-                        </a>
-                        <b ng-if="datas.dgt==12">
-                            <span class="glyphicon glyphicon-lamp"></span> 按自定义类别监测
-                        </b>
+                        <ul class="subNav" ng-if="datas.dgt==t.id">
+                            <li ng-repeat="g in datas.typeGroups"
+                                ng-if="g.group_type==t.id && g.parent_id==0"
+                                ng-class="datas.pid==g.id ? 'active' : ''">
+                                <a ng-click="pageGoto(t.id, g.id);">
+                                    <span class="glyphicon"
+                                          ng-class="datas.pid==g.id ? 'glyphicon glyphicon-triangle-right' : 'glyphicon-menu-right'"></span> <em ng-bind="g.name"></em>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
 
             <div class="box-right">
                 <ul class="nav nav-tabs tftab">
-                    <li><span class="title"><span class="glyphicon glyphicon-star-empty"></span> 总用电概况 </span></li>
+                    <li>
+                        <span class="title">
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span ng-bind="datas.pid == 0 ? datas.currentType.name : datas.currentTypeGroup.name"></span>
+                        </span>
+                    </li>
                     <li class="pull-right disabled">
                         <span>
                             <b>选择日期:  </b>
@@ -78,11 +69,11 @@
                         <div class="form-inline pull-right mb15">
                             <div class="form-group">
                                 <label class="">国标值:</label>
-                                <input class="form-control w100" ng-model="datas.summaryData.internationalValue">
+                                <input class="form-control w100" ng-model="datas.summaryData.internationalValue" ng-change="chSummaryChartInput()">
                             </div>
                             <div class="form-group">
                                 <label class="">数据单位:</label>
-                                <select class="form-control">
+                                <select class="form-control" ng-model="datas.selectSummaryChartType" ng-change="chSummaryChartInput()">
                                     <option ng-repeat="(o,n) in datas.summaryChartTypes"
                                             ng-value="o"
                                             ng-bind="n"
@@ -109,22 +100,13 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th ng-repeat="t in datas.summaryTableTitles"></th>
-                                <th>总费用</th>
+                                <th ng-repeat="t in datas.summaryTableTitles" ng-bind="t"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="d in datas.summaryTableDatas">
-                                <td ng-bind="d.day"></td>
-                                <td ng-bind="d.electric | number : 2"></td>
-                                <td ng-bind="d.electric_area | number : 2"></td>
-                                <td ng-bind="d.water | number : 2"></td>
-                                <td ng-bind="d.water_area | number : 2"></td>
-                                <td ng-bind="d.air | number : 2"></td>
-                                <td ng-bind="d.air_area | number : 2"></td>
-                                <td ng-bind="d.vapor | number : 2"></td>
-                                <td ng-bind="d.vapor_area | number : 2"></td>
-                                <td ng-bind="d.total | number : 2"></td>
+                            <tr ng-repeat="(k,v) in datas.summaryTableDatas">
+                                <td ng-repeat="t in datas.summaryTableTitles"
+                                    ng-bind="v[$index]"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -148,20 +130,35 @@
 
             // 当前页面默认值
             let datas = {
+                pageInited : false,
+
                 leftOn: true,
                 datePickerClassName: ".J-datepicker-range-day",
-                fromDate: moment().format("YYYY-MM")+"-01",
+                fromDate: moment().add(-7, 'day').format("YYYY-MM-DD"),
                 toDate: moment().format("YYYY-MM-DD"),
 
+                guides : [
+                    {
+                        "url": "../",
+                        "name": "",
+                    },
+                    {
+                        "url": "../monitor/summary",
+                        "name": "监测分析"
+                    },
+                    {
+                        "url": "../monitor/ammeter",
+                        "name": "电能监测"
+                    }
+                ],
+
                 dgt: global.request("dgt"),
+                pid: global.request("pid") || 0,
 
-                startYear: "2018",
-
-                summaryChartTypes: {
-                    0: "能耗密度kwh/m2",
-                    1: "能耗kwh",
-                },
-                selectSummaryChartType : 0,
+                summaryChartTypes: [
+                    "能耗密度kwh/m2",
+                    "能耗kwh",
+                ],
 
                 summaryData: {
                     internationalValue: 0.15,  // 国际能耗
@@ -174,13 +171,31 @@
             $scope.datas = datas;
 
             $scope = global.init_base_scope($scope);
+            $scope.compareClass = global.normalCompareClass;
+            $scope.compareValue = global.normalCompareValue;
+
+            $scope.ch_datas_on = function () {
+                $scope.datas.leftOn = !$scope.datas.leftOn;
+                global.init_left($scope, function () {
+                    setTimeout(function () {
+                        $scope.summaryChart.resize();
+                        $scope.summaryPieChart.resize();
+                        $scope.dailyChart.resize();
+                    }, 500);
+                });
+            }
 
             $scope.init_page = function () {
                 global.init_top_menu($scope);
-                global.init_left($scope);
+                global.init_left($scope, function () {
+                    setTimeout(function(){
+                        $scope.summaryChart.resize();
+                        $scope.summaryPieChart.resize();
+                        $scope.dailyChart.resize();
+                    }, 500);
+                });
                 $scope.init_datepicker($scope.datas.datePickerClassName);
                 console.log("init_page");
-
                 $scope.dailyChart = echarts.init(document.getElementById("dailyChart"));
                 $scope.getDatas();
             };
@@ -191,12 +206,69 @@
                 $scope.getDatas();
             }
 
+            $scope.pageJump = function(url) {
+                if(url != "") {
+                    window.location.href = url;
+                }
+            }
+            $scope.pageGoto = function(dgt, pid) {
+                if(typeof pid == "undefined") {
+                    pid = 0;
+                }
+                if($scope.datas.dgt != dgt || $scope.datas.pid != pid) {
+                    window.location.href = "../monitor/ammeterByType?pid="+pid+"&dgt="+dgt;
+                }
+            }
+
             $scope.getDatas = function () {
                 $scope.ajaxAmmeterGroupsSummaryDailyByType()
+                    .then($scope.initBaseDatas)
                     .then($scope.dailyChartDraw)
                     .then($scope.summaryChartTable)
                     .catch($scope.ajax_catch);
+            };
+            $scope.ajaxAmmeterGroupsSummaryDailyByType = function () {
+                var param = {
+                    _method: 'get',
+                    _url: "/" + $scope.datas.buildingId + "/monitor/ajaxAmmeterGroupsSummaryDaily/" + $scope.datas.dgt,
+                    _param: {
+                        from : $scope.datas.fromDate,
+                        to: $scope.datas.toDate,
+                        pid: $scope.datas.pid,
+                    }
+                };
+                return global.return_promise($scope, param);
             }
+
+            $scope.initBaseDatas = function (data) {
+                if(!$scope.datas.pageInited) {
+                    $scope.$apply(function () {
+                        $scope.datas.pageInited = true;
+                        $scope.datas.guides[0].name = data.result.building.name;
+                        $scope.datas.types = data.result.types;
+                        $scope.datas.typeGroups = data.result.typeGroups;
+                        $scope.datas.types.map(function (t) {
+                            if(t.id == $scope.datas.dgt) {
+                                $scope.datas.currentType = t;
+                                $scope.datas.guides.push({
+                                    "href": "../monitor/ammeterByType?dgt="+t.id,
+                                    "name" : t.name,
+                                })
+                            }
+                        });
+                        $scope.datas.typeGroups.map(function (t) {
+                            if(t.group_type == $scope.datas.dgt && t.id == $scope.datas.pid) {
+                                $scope.datas.currentTypeGroup = t;
+                                $scope.datas.guides.push({
+                                    "href": "",
+                                    "name" : t.name,
+                                })
+                            }
+                        });
+                    });
+                }
+                return data;
+            };
 
             var opts = {
                 color: settings.colors,
@@ -231,85 +303,106 @@
             $scope.dailyChartDraw = function (data) {
                 console.log(data);
                 var opt = angular.copy(opts);
-                for(var i=0; i<moment(data.result.to).diff(moment(data.result.from), "days"); i++) {
+                for(var i=0; i<=moment(data.result.to).diff(moment(data.result.from), "days"); i++) {
                     opt.xAxis[0].data.push(moment(data.result.from).add(i, "day").format("YYYY-MM-DD"));
                 }
                 var legend_data = [];
+                var tmp_sub_data = {};
+                // 生成处理函数
+                var func = null;
+                if($scope.datas.selectSummaryChartType == 1) {
+                    func = function(a) {
+                        return parseFloat(a).toFixed(4);
+                    }
+                } else {
+                    func = function(a, b) {
+                        try {
+                            return (a / b).toFixed(4);
+                        } catch (e) {
+                            return a;
+                        }
+                    }
+                }
+
                 data.result["dailyDatas"].map(function (d) {
                     legend_data.push(d["name"]);
                     var tmpSeries = {
                         name: d["name"],
                         type:'line',
-                        stack: '总量',
-                        itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                        data: fmtEChartData(opt.xAxis[0].data, d),
+                        //stack: '总量',
+                        //itemStyle: {normal: {lineStyle: {type: 'default'}}},
+                        data: fmtEChartData(opt.xAxis[0].data, d, func),
                     };
                     opt.series.push(tmpSeries);
+                    tmp_sub_data[d["gid"]] = d["name"];
+                });
+                // 添加国际值线
+                opt.series.push({
+                    name: "国际值",
+                    type: "line",
+                    symbol: 'none',
+                    itemStyle: {normal: {lineStyle: {type: 'dotted'}}},
+                    data: fmtEChartData(opt.xAxis[0].data, {datas: []}, undefined, $scope.datas.summaryData.internationalValue),
+                    z: 100,  // 显示在最顶层
                 });
                 opt.legend.data = legend_data;
+                $scope.datas.subTypes = tmp_sub_data;
                 console.log(opt);
                 global.drawEChart($scope.dailyChart, opt);
                 return data;
             };
-            function fmtEChartData (categroys, data) {
+            function fmtEChartData (categroys, data, func, defaultVal) {
+                if(typeof defaultVal == "undefined") { defaultVal = 0; }
+                if(typeof func == "undefined") { func = function(a){ return a.val; } };
                 var tmpSeriesData = [];
                 for (var i in categroys) {
+                    tmpSeriesData[i] = defaultVal;
                     for (var j in data.datas) {
                         if (data.datas[j].key == categroys[i]) {
-                            tmpSeriesData.push(parseFloat(data.datas[j].val));
+                            tmpSeriesData[i] = func(data.datas[j].val, data.prop_area);
                             break;
                         }
                     }
-                    tmpSeriesData.push(0);
                 }
                 return tmpSeriesData;
             }
-            $scope.ajaxAmmeterGroupsSummaryDailyByType = function () {
-                var param = {
-                    _method: 'get',
-                    _url: "/" + $scope.datas.buildingId + "/monitor/ajaxAmmeterGroupsSummaryDaily/" + $scope.datas.dgt,
-                    _param: {
-                        from : $scope.datas.fromDate,
-                        to: $scope.datas.toDate,
-                    }
-                };
-                return global.return_promise($scope, param);
+            $scope.chSummaryChartInput = function () {
+                if(typeof $scope.datas.selectSummaryChartType == "undefined") {
+                    $scope.datas.selectSummaryChartType = 0;
+                }
+                $scope.dailyChartDraw($scope.datas.cacheData);
             }
 
             $scope.summaryChartTable = function (data) {
                 $scope.datas.summaryTableTitles = ["日期"];
-                $scope.datas.summaryTableDatas = [];
+                $scope.datas.summaryTableDatas = {};
 
-                for(var i=0; i<moment(data.result.to).diff(moment(data.result.from), "days"); i++) {
-                    $scope.datas.summaryTableDatas.push([moment(data.result.from).add(i, "day").format("YYYY-MM-DD")]);
+                for(var i=0; i<=moment(data.result.to).diff(moment(data.result.from), "days"); i++) {
+                    var k = moment(data.result.from).add(i, "day").format("YYYY-MM-DD");
+                    $scope.datas.summaryTableDatas[k] = [k];
                 }
 
                 data.result["dailyDatas"].map(function (d) {
-                    $scope.datas.summaryTableTitles[d["name"]] = "";
-                    $scope.datas.summaryTableDatas.push()
+                    $scope.datas.summaryTableTitles.push(d["name"]);
+                    $scope.datas.summaryTableTitles.push(d["name"]+"密度");
+                    var ind = $scope.datas.summaryTableTitles.indexOf(d["name"]);
+                    for(var o in $scope.datas.summaryTableDatas) {
+                        $scope.datas.summaryTableDatas[o].push(0);
+                        $scope.datas.summaryTableDatas[o].push(0);
+                    }
+                    for(var i in d.datas) {
+                        $scope.datas.summaryTableDatas[d.datas[i].key][ind] = parseFloat(d.datas[i].val).toFixed(4);
+                        $scope.datas.summaryTableDatas[d.datas[i].key][ind+1] = (d.datas[i].val/d.prop_area).toFixed(4);
+                    }
                 });
-                
-                $scope.datas.summaryTableDatas = [];
-                for(var i = 0; i< moment($scope.datas.toDate).diff($scope.datas.fromDate, 'days'); i ++) {
-                    var e = Math.random()*200 + 100;
-                    var w = Math.random()*200 + 100;
-                    var r = Math.random()*200 + 100;
-                    var v = Math.random()*200 + 100;
-                    var a = 960;
-                    var d = {
-                        "day": moment($scope.datas.fromDate).add(i, "day").format("YYYY-MM-DD"),
-                        "electric": e,
-                        "electric_area": e/a,
-                        "water": w/a,
-                        "water_area": w/a,
-                        "air": r/a,
-                        "air_area": r/a,
-                        "vapor": v/a,
-                        "vapor_area": v/a,
-                        "total": e*0.5+w*2.1+r*3.5+v*2.2,
-                    };
-                    $scope.datas.summaryTableDatas.push(d);
-                }
+                console.log($scope.datas.summaryTableTitles);
+                console.log($scope.datas.summaryTableDatas);
+                $scope.$apply(function () {
+                    $scope.datas.summaryTableTitles = $scope.datas.summaryTableTitles;
+                    $scope.datas.summaryTableDatas = $scope.datas.summaryTableDatas;
+                });
+
+                $scope.datas.cacheData = data;
             };
 
             $scope.init_page();

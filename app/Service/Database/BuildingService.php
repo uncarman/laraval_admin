@@ -46,6 +46,58 @@ class BuildingService
         return empty($res) ? [] : head($res);
     }
 
+    public function getBuildingCollectors($buildingId) {
+        $sql = "
+            select
+                c.*,
+                'collector' as type,
+                '采集器' as type_txt
+            from collector c
+            where build_id=:buildingId 
+                and status = '正常'
+        ";
+        $res = $this->db->select($sql, ["buildingId" => $buildingId]);
+        return empty($res) ? [] : $res;
+    }
+
+    public function getBuildingMeters($buildingId) {
+        $sql = "
+        select
+        *
+        FROM (
+            select
+                a.build_id as bid,
+                a.id as id,
+                a.name as name,
+                a.sn as sn,
+                a.collector_id as cid,
+                a.is_main as is_main,
+                a.rate as rate,
+                a.note as note,
+                'ammeter' as type,
+                '电表' as type_txt
+            from ammeter a
+            where a.status = '正常'
+            UNION
+            select
+                w.build_id as bid,
+                w.id as id,
+                w.name as name,
+                w.sn as sn,
+                w.collector_id as cid,
+                w.is_main as is_main,
+                w.rate as rate,
+                w.note as note,
+                'watermeter' as type,
+                '水表' as type_txt
+            from watermeter w
+            where w.status = '正常'
+        ) totalmeter where totalmeter.bid = :buildingId
+        ";
+        $res = $this->db->select($sql, ["buildingId" => $buildingId]);
+        return empty($res) ? [] : $res;
+    }
+
     public function getAmmeterBySn($collectorSn, $meterSn)
     {
         $sql = "
@@ -305,19 +357,29 @@ class BuildingService
     }
 
 
+    // 楼宇所有表数据
+    public function getBuildingAmmeters($building_id) {
+        $sql = "
+        select
+            a.*,
+            'ammeter' as type
+        from ammeter as a
+        where a.build_id = :buildingId
+        ";
+        $res = $this->db->select($sql, ["buildingId" => $building_id]);
+        return empty($res) ? [] : $res;
+    }
 
 
     // 跟组相关
-    public function getBuildingGroupTypes($building_id) {
+    public function getBuildingGroupTypes() {
         $sql = "
             select
-                tc.val as tcname, dg.group_type
-            from device_group dg
-            left join type_category tc on tc.id = dg.group_type
-            where building_id = :buildingId and dg.parent_id=0
-            group by dg.group_type
+                tc.id, tc.val as name
+            from type_category tc
+            where tc.type='device_group_type'
         ";
-        $res = $this->db->select($sql, ["buildingId" => $building_id]);
+        $res = $this->db->select($sql);
         return empty($res) ? [] : $res;
     }
 
@@ -327,58 +389,186 @@ class BuildingService
                 dg.*
             from device_group dg
             where building_id = :buildingId and group_type = :groupType
-            order by dg.parent_id asc, dg.name asc
+            order by dg.parent_id asc, dg.id asc
         ";
         $res = $this->db->select($sql, ["buildingId" => $building_id, "groupType" => $group_type]);
         return empty($res) ? [] : $res;
     }
 
 
-    // 根据分组类型查询组内电表数据汇总
-    public function buildingAmmeterGroupsSummaryDaily($buildingId, $groupTypeId, $from, $to) {
-        if(empty($buildingId) || empty($groupTypeId)) {
-            return [];
+    // 电表数据汇总
+    public function buildingAmmeterSummary($building_id, $date=null, $type=null) {
+        // 根据 ammeter 中 is_main 来确认总表
+        if(empty($date)) {
+            // 所有数据
+            $sql = "
+                SELECT
+                    sum(ad.val * a.rate) as val
+                from ammeter a 
+                    LEFT JOIN (
+                        SELECT
+                            ammeter_id,
+                            max(positive_active_power) - min(positive_active_power) as val
+                        from ammeter_data
+                        GROUP BY ammeter_id
+                    ) ad on ad.ammeter_id = a.id and a.status = '正常' and a.build_id=:buildingId and a.is_main = 1
+            ";
+            $res = $this->db->select($sql, ["buildingId" => $building_id]);
+        } else {
+            if($type == "year") {
+                $dateFrom = $date;
+                $dateTo = date("Y", strtotime("$date-01 +1 years"));
+            } else if($type == "month") {
+                $dateFrom = $date;
+                $dateTo = date("Y-m", strtotime("+1 months $date"));
+            }
+            $sql = "
+                SELECT
+                    sum(IFNULL(ad.val,0) * a.rate) as val
+                from ammeter a 
+                    LEFT JOIN (
+                        SELECT
+                                ammeter_id,
+                                max(positive_active_power) - min(positive_active_power) as val
+                        from ammeter_data
+                        where recorded_at >= :dateFrom and recorded_at < :dateTo
+                        GROUP BY ammeter_id
+                    ) ad on ad.ammeter_id = a.id and a.status = '正常' and a.build_id=:buildingId and a.is_main = 1
+            ";
+            $res = $this->db->select($sql, ["buildingId" => $building_id, "dateFrom" => $dateFrom, "dateTo" => $dateTo]);
+        }
+        return empty($res) ? [] : head($res);
+    }
+
+    public function buildingAmmeterSummaryDatas($building_id, $type, $from, $to) {
+        $dateFrom = $from;
+        if($type == "hour") {
+            $groupType = "%Y-%m-%d %h";
+            $dateTo = date("Y-m-d H", strtotime("+1 hours $to"));
+        } else if($type == "day") {
+            $groupType = "%Y-%m-%d";
+            $dateTo = date("Y-m-d", strtotime("+1 days $to"));
+        } else if($type == "month") {
+            $groupType = "%Y-%m";
+            $dateTo = date("Y-m", strtotime("+1 months $to"));
+        } else {
+            $groupType = "%Y";
+            $dateTo = date("Y", strtotime("+1 years $to"));
         }
         $sql = "
         SELECT
-            t.id,
-            max(t.gname) as name,
-            max(t.prop_area) as prop_area,
-            max(t.prop_num) as prop_num,
-            sum(t.val) as val,
-            t.record_date
-        from (
-            SELECT
-                dg.id,
-                dg.name as gname,
-                dg.prop_area,
-                dg.prop_num,
-                a.name as aname,
-                a.sn,
-                a.rate,
-                a.note,
-                ad.val,
-                ad.record_date
-            from device_group dg
-                LEFT JOIN device_group_map dgm on dg.id = dgm.device_group_id
-                LEFT JOIN ammeter a on a.id = dgm.device_id and dgm.device_type = 'ammeter'
-                LEFT JOIN (
-                    SELECT
-                        ammeter_id,
-                        max(positive_active_power) - min(positive_active_power) as val,
-                        DATE_FORMAT(recorded_at, '%Y-%m-%d') as record_date
-                    from ammeter_data
-                    GROUP BY ammeter_id, DATE_FORMAT(recorded_at, '%Y-%m-%d')
-                ) ad on ad.ammeter_id = a.id
-            where dg.building_id = :buildingId and dg.group_type = :groupType
-                and a.status = '正常'
-                and ad.record_date >= :from and ad.record_date <= :to
-            -- ORDER BY dg.id asc, a.id asc, ad.record_date asc
-        ) t
-        GROUP BY t.id, t.record_date
-        ORDER BY t.id asc, t.record_date asc
+              sum(IFNULL(ad.val,0) * a.rate) as val,
+              ad.record_date
+        from ammeter a 
+            right JOIN (
+                SELECT
+                    ammeter_id,
+                    max(positive_active_power) - min(positive_active_power) as val,
+                    DATE_FORMAT(recorded_at, '".$groupType."') as record_date
+                from ammeter_data
+                where recorded_at >= :dateFrom and recorded_at <= :dateTo
+                    GROUP BY ammeter_id, DATE_FORMAT(recorded_at, '".$groupType."')
+            ) ad on ad.ammeter_id = a.id and a.status = '正常' and a.build_id=:buildingId and a.is_main = 1
+        group by ad.record_date
         ";
-        $res = $this->db->select($sql, ["buildingId" => $buildingId, "groupType" => $groupTypeId, "from" => $from, "to" => $to]);
+        $res = $this->db->select($sql, ["buildingId" => $building_id, "dateFrom" => $dateFrom, "dateTo" => $dateTo]);
+        return empty($res) ? [] : $res;
+    }
+
+    // 按日期输出类别内的电表总和
+    public function buildingAmmeterGroupsSummaryDaily($buildingId, $groupTypeId, $parentId, $from, $to) {
+        if(empty($buildingId) || empty($groupTypeId)) {
+            return [];
+        }
+
+        if($parentId == 0) {
+            // 获取当前类型下大类汇总
+            $sql = "
+                SELECT
+                    t.id,
+                    max(t.gname) as name,
+                    max(t.prop_area) as prop_area,
+                    max(t.prop_num) as prop_num,
+                    sum(t.val) as val,
+                    t.record_date
+                from (
+                    SELECT
+                        dgp.id,
+                        dgp.name as gname,
+                        dgp.prop_area,
+                        dgp.prop_num,
+                        a.name as aname,
+                        a.sn,
+                        a.rate,
+                        a.note,
+                        ad.val * a.rate as val,
+                        ad.record_date
+                    from device_group dg
+                        LEFT JOIN device_group dgp on dg.parent_id = dgp.id
+                        LEFT JOIN device_group_map dgm on dg.id = dgm.device_group_id
+                        LEFT JOIN ammeter a on a.id = dgm.device_id and dgm.device_type = 'ammeter'
+                        LEFT JOIN (
+                            SELECT
+                                ammeter_id,
+                                max(positive_active_power) - min(positive_active_power) as val,
+                                DATE_FORMAT(recorded_at, '%Y-%m-%d') as record_date
+                            from ammeter_data
+                            GROUP BY ammeter_id, DATE_FORMAT(recorded_at, '%Y-%m-%d')
+                        ) ad on ad.ammeter_id = a.id
+                    where dg.building_id = :buildingId and dg.group_type = :groupType
+                        and a.status = '正常' and dgp.parent_id = :parentId
+                        and ad.record_date >= :from and ad.record_date <= :to
+                ) t
+                GROUP BY t.id, t.record_date
+                ORDER BY t.id asc, t.record_date asc
+           ";
+        } else {
+            // 获取当前类型下某个大类下的子类汇总
+            $sql = "
+                SELECT
+                    t.id,
+                    max(t.gname) as name,
+                    max(t.prop_area) as prop_area,
+                    max(t.prop_num) as prop_num,
+                    sum(t.val) as val,
+                    t.record_date
+                from (
+                    SELECT
+                        dg.id,
+                        dg.name as gname,
+                        dg.prop_area,
+                        dg.prop_num,
+                        a.name as aname,
+                        a.sn,
+                        a.rate,
+                        a.note,
+                        ad.val * a.rate as val,
+                        ad.record_date
+                    from device_group dg
+                        LEFT JOIN device_group_map dgm on dg.id = dgm.device_group_id
+                        LEFT JOIN ammeter a on a.id = dgm.device_id and dgm.device_type = 'ammeter'
+                        LEFT JOIN (
+                            SELECT
+                                ammeter_id,
+                                max(positive_active_power) - min(positive_active_power) as val,
+                                DATE_FORMAT(recorded_at, '%Y-%m-%d') as record_date
+                            from ammeter_data
+                            GROUP BY ammeter_id, DATE_FORMAT(recorded_at, '%Y-%m-%d')
+                        ) ad on ad.ammeter_id = a.id
+                    where dg.building_id = :buildingId and dg.group_type = :groupType
+                        and a.status = '正常' and dg.parent_id=:parentId
+                        and ad.record_date >= :from and ad.record_date <= :to
+                ) t
+                GROUP BY t.id, t.record_date
+                ORDER BY t.id asc, t.record_date asc
+            ";
+        }
+        $res = $this->db->select($sql, [
+            "buildingId" => $buildingId,
+            "groupType" => $groupTypeId,
+            "parentId" => $parentId,
+            "from" => $from, "to" => $to
+        ]);
         return empty($res) ? [] : $res;
     }
 

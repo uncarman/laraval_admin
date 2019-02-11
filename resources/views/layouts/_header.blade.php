@@ -40,7 +40,7 @@
                 </ul>
             </li>
 
-            <li class="btn-group _management">
+            <li class="btn-group top-management">
                 <a href="../management/summary" class=""><span class="glyphicon glyphicon-leaf"></span> 节能管理</a>
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
@@ -59,8 +59,8 @@
                     <span class="sr-only"> </span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="/monitor/ammeter">电能监测</a></li>
-                    <li><a href="/monitor/watermeter">水量监测</a></li>
+                    <li><a href="../warning/summary">所有报警</a></li>
+                    <li><a href="../warning/alertSettings">报警设置</a></li>
                 </ul>
             </li>
 
@@ -71,12 +71,12 @@
                     <span class="sr-only"> </span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="../monitor/ammeter">建筑管理</a></li>
-                    <li><a href="../monitor/watermeter">设备管理</a></li>
-                    <li><a href="/monitor/watermeter">基本配置</a></li>
+                    <li><a href="../settings/group">监测配置</a></li>
+                    <li><a href="../settings/device">设备管理</a></li>
+                    <li><a href="/settings/base">基本配置</a></li>
                     <li class="divider"></li>
-                    <li><a href="/monitor/watermeter">账号管理</a></li>
-                    <li><a href="/monitor/watermeter">权限和角色</a></li>
+                    <li><a href="/settings/profile">账号管理</a></li>
+                    <li><a href="/settings/roles">权限和角色</a></li>
                 </ul>
             </li>
         </ul>

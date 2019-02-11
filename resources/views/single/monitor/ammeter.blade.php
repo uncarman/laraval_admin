@@ -2,12 +2,12 @@
 
 @section('content')
 
-    <div class="breadcrumb">
-        <li><a href="/dashboard">首页</a></li>
-        <li><a href="../monitor/summary">监测分析</a></li>
-        <li><a href="../monitor/ammeter">电能监测</a></li>
-        <li class="active">总用电概述</li>
-    </div>
+    <ul class="breadcrumb">
+        <li ng-repeat="g in datas.guides"
+            ng-class="$index == datas.guides.length-1 ? 'active' : ''">
+            <a ng-click="pageJump(g.url)" ng-bind="g.name"></a>
+        </li>
+    </ul>
 
     <!-- Default box -->
     <div class="box">
@@ -19,38 +19,13 @@
             <div class="box-left">
                 <ul class="leftNav">
                     <li class="title"><span class="glyphicon glyphicon-flash"></span> 电能监测</li>
-                    <li class="active"><span class="glyphicon glyphicon-star"></span> 总用电概述</li>
-                    <li ng-class="datas.dgt==9 ? 'active' : ''">
-                        <a href="../monitor/ammeterByType?dgt=9" ng-if="datas.dgt!=9">
-                            <span class="glyphicon glyphicon-tint"></span> 按能耗分项监测
-                        </a>
-                        <b ng-if="datas.dgt==9">
-                            <span class="glyphicon glyphicon-tint"></span> 按能耗分项监测
-                        </b>
+                    <li class="active">
+                        <a><span class="glyphicon glyphicon-star-empty"></span> 总用电概述</a>
                     </li>
-                    <li ng-class="datas.dgt==10 ? 'active' : ''">
-                        <a href="../monitor/ammeterByType?dgt=10" ng-if="datas.dgt!=10">
-                            <span class="glyphicon glyphicon-fire"></span> 按建筑区域监测
+                    <li ng-repeat="t in datas.types" ng-class="datas.dgt==t.id ? 'active' : ''">
+                        <a ng-click="pageGoto(t.id);">
+                            <span class="glyphicon glyphicon-menu-right"></span> <em ng-bind="'按'+t.name+'监测'"></em>
                         </a>
-                        <b ng-if="datas.dgt==10">
-                            <span class="glyphicon glyphicon-fire"></span> 按建筑区域监测
-                        </b>
-                    </li>
-                    <li ng-class="datas.dgt==11 ? 'active' : ''">
-                        <a href="../monitor/ammeterByType?dgt=11" ng-if="datas.dgt!=11">
-                            <span class="glyphicon glyphicon-cloud"></span> 按组织机构监测
-                        </a>
-                        <b ng-if="datas.dgt==11">
-                            <span class="glyphicon glyphicon-cloud"></span> 按组织机构监测
-                        </b>
-                    </li>
-                    <li ng-class="datas.dgt==12 ? 'active' : ''">
-                        <a href="../monitor/ammeterByType?dgt=12" ng-if="datas.dgt!=12">
-                            <span class="glyphicon glyphicon-lamp"></span> 按自定义类别监测
-                        </a>
-                        <b ng-if="datas.dgt==12">
-                            <span class="glyphicon glyphicon-lamp"></span> 按自定义类别监测
-                        </b>
                     </li>
                 </ul>
             </div>
@@ -58,17 +33,30 @@
             <div class="box-right">
                 <ul class="nav nav-tabs tftab">
                     <li><span class="title"><span class="glyphicon glyphicon-star-empty"></span> 总用电概况 </span></li>
-                    <li class="pull-right disabled">
-                        <span>
-                            <b>选择日期:  </b>
-                            <span class="c-datepicker-date-editor J-datepicker-range-day">
-                                <i class="c-datepicker-range__icon kxiconfont icon-clock"></i>
-                                <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.fromDate">
-                                <span class="c-datepicker-range-separator">-</span>
-                                <input placeholder="结束日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.toDate">
-                            </span>
-                            <button ng-click="refresh_datas();" class="btn btn-primary"><spam class="glyphicon glyphicon-refresh"></spam> 更新</button>
+                    <li class="pull-right disabled form-inline">
+                        查询条件:
+                        <select class="form-control mr10" ng-model="datas.query.type">
+                            <option ng-repeat="t in datas.opts.types"
+                                    ng-value="t.val"
+                                    ng-bind="t.name"
+                                    ng-selected="t.val == datas.query.type"></option>
+                        </select>
+                        从:
+                        <span class="c-datepicker-date-editor J-datepicker-range-day">
+                            <input placeholder="开始日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.fromDate">
                         </span>
+                        到:
+                        <span class="c-datepicker-date-editor J-datepicker-range-day mr10">
+                            <input placeholder="结束日期" name="" class="c-datepicker-data-input only-date" ng-model="datas.toDate">
+                        </span>
+                        同比数据:
+                        <select class="form-control _compareTos" ng-model="datas.query.compareTo">
+                            <option ng-repeat="t in datas.opts.compareTos"
+                                    ng-value="t.val"
+                                    ng-bind="t.name"
+                                    ng-selected="t.val == datas.query.compareTo"></option>
+                        </select>
+                        <button ng-click="refresh_datas();" class="btn btn-primary"><spam class="glyphicon glyphicon-refresh"></spam> 更新</button>
                     </li>
                 </ul>
                 <div class="nav-tabContents">
@@ -78,7 +66,7 @@
                                 <div class="col-xs-12">
                                     <p class="t1">
                                         <em ng-bind="datas.summaryData.totalName">--</em>
-                                        <b ng-bind="datas.summaryData.total" ng-class="compareClass(datas.summaryData.total, 'd');">--</b>
+                                        <b ng-bind="datas.summaryData.total | number : 2" ng-class="compareClass(datas.summaryData.total, 'd');">--</b>
                                         <i ng-bind="datas.summaryData.totalUnit">--</i>
                                     </p>
                                     <p class="t2" ng-class="compareClass(datas.summaryData.totalCompareMonth, 't');">
@@ -100,7 +88,7 @@
                                 <div class="col-xs-3">
                                     <p class="t1">
                                         <em ng-bind="datas.summaryData.total1Name">--</em>
-                                        <b ng-bind="datas.summaryData.total1" ng-class="compareClass(datas.summaryData.total1, 'd');">--</b>
+                                        <b ng-bind="datas.summaryData.total1 | number : 2" ng-class="compareClass(datas.summaryData.total1, 'd');">--</b>
                                         <i ng-bind="datas.summaryData.total1Unit">--</i>
                                     </p>
                                     <p class="t2" ng-class="compareClass(datas.summaryData.totalCompare1Month, 't');">
@@ -117,7 +105,7 @@
                                 <div class="col-xs-3">
                                     <p class="t1">
                                         <em ng-bind="datas.summaryData.total2Name">--</em>
-                                        <b ng-bind="datas.summaryData.total2" ng-class="compareClass(datas.summaryData.total2, 'd');">--</b>
+                                        <b ng-bind="datas.summaryData.total2 | number : 2" ng-class="compareClass(datas.summaryData.total2, 'd');">--</b>
                                         <i ng-bind="datas.summaryData.total2Unit">--</i>
                                     </p>
                                     <p class="t2" ng-class="compareClass(datas.summaryData.totalCompare2Month, 't');">
@@ -134,7 +122,7 @@
                                 <div class="col-xs-3">
                                     <p class="t1">
                                         <em ng-bind="datas.summaryData.total3Name">--</em>
-                                        <b ng-bind="datas.summaryData.total3" ng-class="compareClass(datas.summaryData.total3, 'd');">--</b>
+                                        <b ng-bind="datas.summaryData.total3 | number : 2" ng-class="compareClass(datas.summaryData.total3, 'd');">--</b>
                                         <i ng-bind="datas.summaryData.total3Unit">--</i>
                                     </p>
                                     <p class="t2" ng-class="compareClass(datas.summaryData.totalCompare3Month, 't');">
@@ -151,7 +139,7 @@
                                 <div class="col-xs-3">
                                     <p class="t1">
                                         <em ng-bind="datas.summaryData.total4Name">--</em>
-                                        <b ng-bind="datas.summaryData.total4" ng-class="compareClass(datas.summaryData.total4, 'd');">--</b>
+                                        <b class="color" ng-bind="datas.summaryData.total4 | number : 2" ng-class="compareClass(datas.summaryData.total4, 'd');">--</b>
                                         <i ng-bind="datas.summaryData.total4Unit">--</i>
                                     </p>
                                     <p class="t2" ng-class="compareClass(datas.summaryData.totalCompare4Month, 't');">
@@ -180,7 +168,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="">数据单位:</label>
-                                <select class="form-control">
+                                <select class="form-control _summaryChartTypes" ng-model="datas.selectSummaryChartType" ng-change="chSummaryChartInput()">
                                     <option ng-repeat="(o,n) in datas.summaryChartTypes"
                                             ng-value="o"
                                             ng-bind="n"
@@ -191,9 +179,9 @@
                         </div>
                         <div class="clearfix"></div>
 
-                        <div id="dailyChart" style="width:100%; height:360px; display: none;"></div>
-                        <div id="summaryPieChart" class="pull-left" style="width:28%; height:400px;"></div>
-                        <div id="summaryChart" class="pull-right" style="width:70%; height:400px;"></div>
+                        <div id="dailyChart" style="width:100%; height:360px;"></div>
+                        <div id="summaryPieChart" class="pull-left" style="width:28%; height:400px; display: none;"></div>
+                        <div id="summaryChart" class="pull-right" style="width:70%; height:400px; display: none;"></div>
                         <div class="clearfix"></div>
 
                     </div>
@@ -208,30 +196,13 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>日期</th>
-                                <th>照明与插座</th>
-                                <th>照明与插座密度</th>
-                                <th>空调用电</th>
-                                <th>空调用电密度</th>
-                                <th>动力用电</th>
-                                <th>动力用电密度</th>
-                                <th>特殊用电</th>
-                                <th>特殊用电密度</th>
-                                <th>总费用</th>
+                                <th ng-repeat="t in datas.summaryTableTitles" ng-bind="t"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="d in datas.summaryTableDatas">
-                                <td ng-bind="d.day"></td>
-                                <td ng-bind="d.electric | number : 2"></td>
-                                <td ng-bind="d.electric_area | number : 2"></td>
-                                <td ng-bind="d.water | number : 2"></td>
-                                <td ng-bind="d.water_area | number : 2"></td>
-                                <td ng-bind="d.air | number : 2"></td>
-                                <td ng-bind="d.air_area | number : 2"></td>
-                                <td ng-bind="d.vapor | number : 2"></td>
-                                <td ng-bind="d.vapor_area | number : 2"></td>
-                                <td ng-bind="d.total | number : 2"></td>
+                            <tr ng-repeat="(k,v) in datas.summaryTableDatas">
+                                <td ng-repeat="t in datas.summaryTableTitles"
+                                    ng-bind="v[$index]"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -252,55 +223,84 @@
 
             global.on_load_func($scope);
 
+            var startYear = 2018;
+
             // 当前页面默认值
             let datas = {
+                pageInited : false,
+
                 leftOn: true,
                 datePickerClassName: ".J-datepicker-range-day",
-                fromDate: moment().format("YYYY-MM")+"-01",
+                fromDate: moment().add(-7, 'day').format("YYYY-MM-DD"),
                 toDate: moment().format("YYYY-MM-DD"),
 
-                startYear: "2018",
+                startYear: startYear,
+                opts : {
+                    types: [
+                        {
+                            val: "hour",
+                            name: "按小时",
+                            "fmt" : "D-H",
+                        },
+                        {
+                            val: "day",
+                            name: "按日",
+                            "fmt" : "Y-M-D",
+                        },
+                        {
+                            val: "month",
+                            name: "按月",
+                            "fmt" : "Y-M",
+                        },
+                        {
+                            val: "year",
+                            name: "按年",
+                            "fmt" : "Y",
+                        }
+                    ],
+                    // 需要根据当前时间生成对比数据
+                    compareTos: [
+//                        {
+//                            val: 2018,
+//                            name: "2018年同比数据"
+//                        }
+                    ],
+                },
+
+                query: {
+//                    type: null,
+//                    compareTo: null,
+                },
+
+                guides : [
+                    {
+                        "url": "../",
+                        "name": "",
+                    },
+                    {
+                        "url": "../monitor/summary",
+                        "name": "监测分析"
+                    },
+                    {
+                        "url": "../monitor/ammeter",
+                        "name": "电能监测"
+                    },
+                    {
+                        "url": "",
+                        "name": "总用电概述"
+                    }
+                ],
 
                 summaryChartTypes: {
-                    0: "能耗密度kwh/m2",
-                    1: "能耗kwh",
+                    0: "能耗kwh",
+                    1: "能耗密度kwh/m2",
+                    2: "标煤(吨)",
+                    3: "碳排放(吨)",
+                    4: "费用(元)"
                 },
-                selectSummaryChartType : 0,
+                selectSummaryChartType : 1,
 
-                summaryData: {
-                    totalName: "总用电量",
-                    totalUnit: "kwh",
-                    total: 12345,
-                    totalCompareMonth: -2.14,
-                    totalCompareYear: -12.54,
-
-                    total1Name: "照明与插座",
-                    total1Unit: "kwh",
-                    total1: 2234,
-                    totalCompare1Month: -1.14,
-                    totalCompare1Year: -12.54,
-
-                    total2Name: "空调用电",
-                    total2Unit: "kwh",
-                    total2: 3341,
-                    totalCompare2Month: -0.32,
-                    totalCompare2Year: -4.84,
-
-                    total3Name: "动力用电",
-                    total3Unit: "kwh",
-                    total3: 654,
-                    totalCompare3Month: 2.14,
-                    totalCompare3Year: -7.14,
-
-                    total4Name: "特殊用电",
-                    total4Unit: "kwh",
-                    total4: 0,
-                    totalCompare4Month: 0,
-                    totalCompare4Year: 0,
-
-                    internationalValue: 0.15,  // 国际能耗
-
-                },
+                summaryData: {},
 
                 summaryChartDatas: [
                     {
@@ -366,69 +366,123 @@
             $scope.datas = datas;
 
             $scope = global.init_base_scope($scope);
+            $scope.compareClass = global.normalCompareClass;
+            $scope.compareValue = global.normalCompareValue;
+
+            $scope.ch_datas_on = function () {
+                $scope.datas.leftOn = !$scope.datas.leftOn;
+                global.init_left($scope, function () {
+                    setTimeout(function(){
+//                        $scope.summaryChart.resize();
+//                        $scope.summaryPieChart.resize();
+                        $scope.dailyChart.resize();
+                    }, 500);
+                });
+            };
 
             $scope.init_page = function () {
                 global.init_top_menu($scope);
                 global.init_left($scope, function () {
                     setTimeout(function(){
-                        $scope.summaryChart.resize();
-                        $scope.summaryPieChart.resize();
+//                        $scope.summaryChart.resize();
+//                        $scope.summaryPieChart.resize();
                         $scope.dailyChart.resize();
                     }, 500);
                 });
+                global.init_compareto($scope);
                 $scope.init_datepicker($scope.datas.datePickerClassName);
-                console.log("init_page");
 
-                $scope.summaryChart = echarts.init(document.getElementById("summaryChart"));
-                $scope.summaryPieChart = echarts.init(document.getElementById("summaryPieChart"));
+                $scope.datas.query.type = $scope.datas.opts.types[1].val;
+                $scope.datas.query.compareTo = $scope.datas.opts.compareTos[0].val;
+
+                console.log("init_page");
+//                $scope.summaryChart = echarts.init(document.getElementById("summaryChart"));
+//                $scope.summaryPieChart = echarts.init(document.getElementById("summaryPieChart"));
                 $scope.dailyChart = echarts.init(document.getElementById("dailyChart"));
-                $scope.dailyChartDraw();
-                $scope.summaryChartDraw();
-                $scope.summaryPieDraw();
-                $scope.summaryChartTable();
+                $scope.getDatas();
             };
 
             $scope.refresh_datas = function () {
                 $scope.datas.fromDate = $($scope.datas.datePickerClassName).find("input").eq(0).val();
                 $scope.datas.toDate = $($scope.datas.datePickerClassName).find("input").eq(1).val();
-                $scope.summaryChartDraw();
-                $scope.summaryPieDraw();
-                $scope.summaryChartTable();
+                $scope.getDatas();
             }
 
-            $scope.ajaxCallback = function (data) {
-                $scope.$apply(function(){
-                    $scope.datas.datas = data.result;
-                });
+            $scope.pageGoto = function(dgt) {
+                window.location.href = "../monitor/ammeterByType?dgt="+dgt;
+            }
+            $scope.pageJump = function(url) {
+                if(url != "") {
+                    window.location.href = url;
+                }
+            }
+
+            $scope.getDatas = function () {
+                $scope.ajaxAmmeterSummary()
+                    .then($scope.initBaseDatas)
+                    .then($scope.summaryDatas)
+                    .then($scope.dailyChartDraw)
+                    .then($scope.summaryChartTable)
+                    .catch($scope.ajaxCatch);
+            };
+            $scope.ajaxAmmeterSummary = function () {
+                var param = {
+                    _method: 'get',
+                    _url: "/" + $scope.datas.buildingId + "/monitor/ajaxAmmeterSummary",
+                    _param: {
+                        from : $scope.datas.fromDate,
+                        to: $scope.datas.toDate,
+                        type: $scope.datas.query.type,
+                        compareTo: $scope.datas.query.compareTo,
+                    }
+                };
+                return global.return_promise($scope, param);
+            }
+            $scope.initBaseDatas = function (data) {
+                $scope.datas.cacheData = data;
+                if(!$scope.datas.pageInited) {
+                    $scope.$apply(function () {
+                        $scope.datas.pageInited = true;
+                        $scope.datas.guides[0].name = data.result.building.name;
+                        $scope.datas.types = data.result.types;
+                        $scope.datas.typeGroups = data.result.typeGroups;
+                        $scope.datas.types.map(function (t) {
+                            if(t.id == $scope.datas.dgt) {
+                                $scope.datas.currentType = t;
+                                $scope.datas.guides.push({
+                                    "href": "../monitor/ammeterByType?dgt="+t.id,
+                                    "name" : t.name,
+                                })
+                            }
+                        });
+                        $scope.datas.typeGroups.map(function (t) {
+                            if(t.group_type == $scope.datas.dgt && t.id == $scope.datas.pid) {
+                                $scope.datas.currentTypeGroup = t;
+                                $scope.datas.guides.push({
+                                    "href": "",
+                                    "name" : t.name,
+                                })
+                            }
+                        });
+                    });
+                }
                 return data;
             };
 
-            $scope.ajaxCatch = function (e) {
-                alert(e);
+            $scope.summaryDatas = function (data) {
+                $scope.$apply(function () {
+                    $scope.datas.summaryData = data.result.summaryData;
+                })
+                return data;
             }
-
-            $scope.compareClass = function (d, t) {
-                if(t == 't') {
-                    return d > 0 ? 'up' : (d == 0 ? 'right' : 'down');
-                } else if(t == 'i') {
-                    return d > 0 ? 'glyphicon-arrow-up' : (d == 0 ? 'glyphicon-arrow-right' : 'glyphicon-arrow-down');
-                } else if(t == 'd') {
-                    return d == 0 ? 'grey' : '';
-                }
-            };
-            $scope.compareValue = function(d) {
-                return Math.abs(d).toFixed(2) + '%';
-            };
 
             var option = {
                 color: settings.colors,
                 tooltip : {
                     trigger: 'axis'
                 },
-                legend: {
-                    data:[]
-                },
                 calculable : true,
+                legend: { data:[] },
                 xAxis : [
                     {
                         type : 'category',
@@ -527,18 +581,59 @@
                     }
                 ]
             };
+            $scope.dailyChartDraw = function (data) {
+                var opt = angular.copy(option);
 
-            $scope.dailyChartDraw = function () {
-                var opt = angular.copy(opts);
-                for(var i =0; i<4; i++) {
-                    var d = [];
-                    for(var j=0; j<24; j++) {
-                        d.push((Math.random()*700 + 1200 - i*300).toFixed(2));
-                    }
-                    opt.series[i].data = d;
+                // 生成x轴内容
+                var fmt = "YYYY-MM-DD";
+                if($scope.datas.query.type == "hour") { fmt = "DD-HH" }
+                else if($scope.datas.query.type == "day") { fmt = "YYYY-MM-DD" }
+                else if($scope.datas.query.type == "month") { fmt = "YYYY-MM" }
+                else if($scope.datas.query.type == "year") { fmt = "YYYY" }
+                var xlen = Math.ceil(moment(moment($scope.datas.toDate).format(fmt)).diff(moment($scope.datas.fromDate).format(fmt), $scope.datas.query.type, true));
+                var sd = [], sd2 = [];
+                for(var i=0; i<=xlen; i++) {
+                    opt.xAxis[0].data.push(moment($scope.datas.fromDate).add($scope.datas.query.type, i).format(fmt));
+                    sd.push(0);
+                    sd2.push(0);
                 }
+
+                var r = 1;
+                var ds = data.result.chartDatas;
+                if($scope.datas.selectSummaryChartType == 0) { r = 1; }
+                else if ($scope.datas.selectSummaryChartType == 1) { r = 1 / ds.area; }
+                else if ($scope.datas.selectSummaryChartType == 2) { r = ds.coal; }
+                else if ($scope.datas.selectSummaryChartType == 3) { r = ds.co2; }
+                else if ($scope.datas.selectSummaryChartType == 4) { r = ds.fee_policy; }
+                // 生成当前柱状图数据
+                opt.legend.data[0] = $scope.datas.summaryChartTypes[$scope.datas.selectSummaryChartType];
+                ds.datas.map(function (k) {
+                    var ind = opt.xAxis[0].data.indexOf(moment(k.key).format(fmt));
+                    sd[ind] = parseFloat(k.val * r).toFixed(4);
+                });
+                opt.series[0] = {
+                    name: opt.legend.data[0],
+                    type:'bar',
+                    data: sd,
+                };
+
+                // 生成对比折现图数据
+                opt.legend.data[1] = $("._compareTos option:selected").text();
+                var ds2 = data.result.chartCompareDatas;
+                ds2.datas.map(function (k) {
+                    var ind = opt.xAxis[0].data.indexOf(moment(k.key).format(fmt));
+                    sd2[ind] = parseFloat(k.val * r).toFixed(4);
+                });
+                opt.series[1] = {
+                    name: opt.legend.data[1],
+                    type:'line',
+                    data: sd2,
+                };
+
+                console.log(JSON.stringify(opt));
                 $scope.dailyChart.setOption(opt, true);
                 $scope.dailyChart.resize();
+                return data;
             };
 
             $scope.summaryChartDraw = function () {
@@ -602,28 +697,39 @@
                 global.drawEChart($scope.summaryPieChart, opt);
             };
 
-            $scope.summaryChartTable = function () {
-                $scope.datas.summaryTableDatas = [];
-                for(var i = 0; i< moment($scope.datas.toDate).diff($scope.datas.fromDate, 'days'); i ++) {
-                    var e = Math.random()*200 + 100;
-                    var w = Math.random()*200 + 100;
-                    var r = Math.random()*200 + 100;
-                    var v = Math.random()*200 + 100;
-                    var a = 960;
-                    var d = {
-                        "day": moment($scope.datas.fromDate).add(i, "day").format("YYYY-MM-DD"),
-                        "electric": e,
-                        "electric_area": e/a,
-                        "water": w/a,
-                        "water_area": w/a,
-                        "air": r/a,
-                        "air_area": r/a,
-                        "vapor": v/a,
-                        "vapor_area": v/a,
-                        "total": e*0.5+w*2.1+r*3.5+v*2.2,
-                    };
-                    $scope.datas.summaryTableDatas.push(d);
+            $scope.chSummaryChartInput = function () {
+                if(typeof $scope.datas.selectSummaryChartType == "undefined") {
+                    $scope.datas.selectSummaryChartType = 0;
                 }
+                $scope.dailyChartDraw($scope.datas.cacheData);
+            }
+
+            $scope.summaryChartTable = function (data) {
+                $scope.$apply(function () {
+                    $scope.datas.summaryTableTitles = ["日期", "总用电量(kwh)", "当量标煤(吨)", "碳排放量(吨)", "能耗密度(kwh/m2)", "费用(元)"];
+                    $scope.datas.summaryTableDatas = {};
+
+                    var fmt = "YYYY-MM-DD";
+                    if($scope.datas.query.type == "hour") { fmt = "DD-HH" }
+                    else if($scope.datas.query.type == "day") { fmt = "YYYY-MM-DD" }
+                    else if($scope.datas.query.type == "month") { fmt = "YYYY-MM" }
+                    else if($scope.datas.query.type == "year") { fmt = "YYYY" }
+                    var xlen = Math.ceil(moment(moment($scope.datas.toDate).format(fmt)).diff(moment($scope.datas.fromDate).format(fmt), $scope.datas.query.type, true));
+                    var sd = [], sd2 = [];
+                    for(var i=0; i<=xlen; i++) {
+                        var k = moment($scope.datas.fromDate).add($scope.datas.query.type, i).format(fmt);
+                        $scope.datas.summaryTableDatas[k] = [k, 0, 0, 0, 0, 0];
+                    }
+                    data.result.chartDatas.datas.map(function (d) {
+                        $scope.datas.summaryTableDatas[d.key][1] = parseFloat(d.val).toFixed(4); // 总用电量(kwh)
+                        $scope.datas.summaryTableDatas[d.key][2] = parseFloat(d.val * data.result.chartDatas.coal).toFixed(4) ;  // 当量标煤(吨)
+                        $scope.datas.summaryTableDatas[d.key][3] = parseFloat(d.val * data.result.chartDatas.co2).toFixed(4) ;  // 碳排放量(吨)
+                        $scope.datas.summaryTableDatas[d.key][4] = parseFloat(d.val / data.result.chartDatas.area).toFixed(4) ;  // 能耗密度(kwh/m2)
+                        $scope.datas.summaryTableDatas[d.key][5] = parseFloat(d.val * data.result.chartDatas.fee_policy).toFixed(4) ;  // 费用(元)
+                    });
+                    console.log($scope.datas.summaryTableDatas);
+                });
+                return data;
             };
 
             $scope.init_page();

@@ -1,3 +1,4 @@
+    MyAlert = alert;
     var session = {
         mobile: "",
         password: ""
@@ -148,7 +149,6 @@
             for(o in _param) {
                 url = url.replace("{"+o+"}", _param[o]);
             }
-
 
             // 补充 sign 信息
             //_param = global.generateSign(_param);
@@ -832,7 +832,8 @@
             // 添加公共函数给 $scope
             $scope["copy"] = global["copy"];
             $scope["goto"] = global["goto"];
-            $scope.ajax_catch = global.ajax_catch;
+            $scope.ajax_catch = $scope.ajaxCatch = global.ajax_catch;
+            $scope.pageJump = global.pageJump;
             $scope.get_datas = global.get_datas;
             $scope.reset_datas = global.reset_datas;
             $scope.is_view = global.is_view;
@@ -845,6 +846,9 @@
             $scope.get_datas_next = global.get_datas_next;
             $scope.get_datas_prev = global.get_datas_prev;
             $scope.topMenuClick = global.topMenuClick;
+
+            $scope.normalCompareClass = global.normalCompareClass;
+            $scope.normalCompareValue = global.normalCompareValue;
 
             // 前端校验用户登录
             var _session = global.read_storage('session');
@@ -1399,13 +1403,11 @@
             $scope.init_datepicker = function (className) {
                 $(function(){
                     $(className).datePicker({
-                        isRange: true,
-                        hasShortcut: true,
+                        //isRange: true,
+                        //hasShortcut: true,
                         format: "YYYY-MM-DD",
-                        shortcutOptions: rangeShortcutOption,
-                        callback: function () {
-                            
-                        }
+                        //shortcutOptions: rangeShortcutOption,
+                        //between: "year",
                     });
                 });
             };
@@ -1426,6 +1428,12 @@
         drawEChart: function (echart, opt) {
             echart.setOption(opt, true);
             echart.resize();
+        },
+
+        pageJump : function(url) {
+            if(url != "") {
+                window.location.href = url;
+            }
         },
 
         // 顶部菜单加高亮
@@ -1455,6 +1463,32 @@
             if(typeof callback == "function") {
                 callback($scope);
             }
+        },
+
+        // 通用筛查条件中 同比数据
+        init_compareto: function($scope) {
+            var res = [];
+            var current = new Date().getFullYear();
+            for(var i = $scope.datas.startYear; i<current; i++) {
+                res.push({
+                    val: i,
+                    name: i + "年同期数据"
+                });
+            }
+            $scope.datas.opts.compareTos = res;
+        },
+
+        normalCompareClass : function (d, t) {
+            if(t == 't') {
+                return d > 0 ? 'up' : (d == 0 ? 'right' : 'down');
+            } else if(t == 'i') {
+                return d > 0 ? 'glyphicon-arrow-up' : (d == 0 ? 'glyphicon-arrow-right' : 'glyphicon-arrow-down');
+            } else if(t == 'd') {
+                return d == 0 ? 'grey' : '';
+            }
+        },
+        normalCompareValue : function(d) {
+            return Math.abs(d).toFixed(2) + '%';
         },
 
         // 初始化页面公共内容(比如顶部菜单)

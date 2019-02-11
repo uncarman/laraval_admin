@@ -36,7 +36,7 @@
 
     {{--<script src="https://echarts.baidu.com/echarts2/doc/example/www2/js/echarts-all.js"></script>--}}
 </head>
-<body class="hold-transition skin-blue" ng-app="app">
+<body class="hold-transition skin-blue left-on" ng-app="app">
 <div class="wrapper" ng-controller="pageCtrl">
     @include('layouts._header')
     {{--@include('layouts._sidebar')--}}

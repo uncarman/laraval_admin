@@ -43,6 +43,9 @@ Route::group(['prefix' => '/{buildingId}/monitor', 'middleware' => ['auth']], fu
     Route::get('/ammeterByType', 'Monitor\MonitorAmmeterController@ammeterByType');
     Route::get('/watermeter', 'Monitor\MonitorWatermeterController@index');
 
+    Route::get('/ajaxMeterSummary', 'Monitor\MonitorSummaryController@ajaxMeterSummary');
+
+    Route::get('/ajaxAmmeterSummary', 'Monitor\MonitorAmmeterController@ajaxAmmeterSummary');
     Route::get('/ajaxAmmeterGroupsSummaryDaily/{groupTypeId}', 'Monitor\MonitorAmmeterController@ajaxAmmeterGroupsSummaryDaily');
 
 });
@@ -51,6 +54,25 @@ Route::group(['prefix' => '/{buildingId}/statistics', 'middleware' => ['auth']],
     Route::get('/ammeter', 'Statistics\StatisticsAmmeterController@index');
     Route::get('/watermeter', 'Statistics\StatisticsWatermeterController@index');
 });
+Route::group(['prefix' => '/{buildingId}/warning', 'middleware' => ['auth']], function () {
+    Route::get('/summary', 'Warning\WarningSummaryController@index');
+    Route::get('/alertSettings', 'Warning\WarningSummaryController@alertSettings');
 
+    Route::get('/ajaxWarning', 'Warning\WarningSummaryController@ajaxWarning');
+    Route::get('/ajaxAlertList', 'Warning\WarningSummaryController@ajaxAlertList');
+});
+
+Route::group(['prefix' => '/{buildingId}/settings', 'middleware' => ['auth']], function () {
+    Route::get('/summary', 'Settings\SettingsSummaryController@index');
+
+    Route::get('/group', 'Settings\SettingsSummaryController@groupView');
+    Route::get('/group/{groupTypeId}/edit', 'Settings\SettingsSummaryController@groupEdit');
+    Route::get('/ajaxGroupTree', 'Settings\SettingsSummaryController@ajaxGroupTree');
+
+    Route::get('/device', 'Settings\SettingsDeviceController@index');
+    Route::get('/ajaxDeviceList', 'Settings\SettingsDeviceController@ajaxDeviceList');
+
+//    Route::get('/ajaxAlertList', 'Settings\SettingsSummaryController@ajaxAlertList');
+});
 
 //////////////////  多个建筑 //////////////////
