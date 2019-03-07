@@ -66,10 +66,12 @@
 
                     <div>
                         <h3 class="pull-left">图表展示:</h3>
+
                         <div class="form-inline pull-right mb15">
                             <div class="form-group">
                                 <label class="">国标值:</label>
-                                <input class="form-control w100" ng-model="datas.summaryData.internationalValue" ng-change="chSummaryChartInput()">
+                                <span class="form-control w100" style="border:none ;" ng-bind="datas.summaryData.internationalValue"></span>
+                                {{--<input class="form-control w100" ng-model="datas.summaryData.internationalValue" ng-change="chSummaryChartInput()">--}}
                             </div>
                             <div class="form-group">
                                 <label class="">数据单位:</label>
@@ -84,7 +86,8 @@
                         </div>
                         <div class="clearfix"></div>
 
-                        <div id="dailyChart" style="width:100%; height:400px;"></div>
+                        <div id="summaryPieChart" style="float:left; width:30%; height:400px;"></div>
+                        <div id="dailyChart" style="float:left; width:70%; height:400px;"></div>
 
                         <div class="clearfix"></div>
 
@@ -178,7 +181,7 @@
                 $scope.datas.leftOn = !$scope.datas.leftOn;
                 global.init_left($scope, function () {
                     setTimeout(function () {
-                        $scope.summaryChart.resize();
+                        //$scope.summaryChart.resize();
                         $scope.summaryPieChart.resize();
                         $scope.dailyChart.resize();
                     }, 500);
@@ -189,7 +192,7 @@
                 global.init_top_menu($scope);
                 global.init_left($scope, function () {
                     setTimeout(function(){
-                        $scope.summaryChart.resize();
+                        //$scope.summaryChart.resize();
                         $scope.summaryPieChart.resize();
                         $scope.dailyChart.resize();
                     }, 500);
@@ -197,6 +200,7 @@
                 $scope.init_datepicker($scope.datas.datePickerClassName);
                 console.log("init_page");
                 $scope.dailyChart = echarts.init(document.getElementById("dailyChart"));
+                $scope.summaryPieChart = echarts.init(document.getElementById("summaryPieChart"));
                 $scope.getDatas();
             };
 
@@ -224,6 +228,7 @@
                 $scope.ajaxAmmeterGroupsSummaryDailyByType()
                     .then($scope.initBaseDatas)
                     .then($scope.dailyChartDraw)
+                    .then($scope.summaryPieDraw)
                     .then($scope.summaryChartTable)
                     .catch($scope.ajax_catch);
             };
@@ -337,6 +342,7 @@
                     tmp_sub_data[d["gid"]] = d["name"];
                 });
                 // 添加国际值线
+                legend_data.push("国际值");
                 opt.series.push({
                     name: "国际值",
                     type: "line",
@@ -366,6 +372,53 @@
                 }
                 return tmpSeriesData;
             }
+
+            var pieOpt = {
+                color: settings.colors,
+                tooltip : {
+                    trigger: 'top',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    data:[],
+                    x : 'center',
+                    y: "10px",
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'占比',
+                        type:'pie',
+                        radius : [30, 110],
+                        center : ['50%', '50%'],
+                        roseType : 'area',
+                        x: '50%',               // for funnel
+                        max: 40,                // for funnel
+                        sort : 'ascending',     // for funnel
+                        data:[]
+                    }
+                ]
+            };
+            $scope.summaryPieDraw = function (data) {
+                var opt = angular.copy(pieOpt);
+                var legend_data = [];
+                data.result["dailyDatas"].map(function (d) {
+                    opt.legend.data.push(d["name"]);
+                    var data = 0;
+                    for(var i=0; i< d.datas.length; i++) {
+                        data += parseFloat(d.datas[i].val);
+                    }
+                    opt.series[0].data.push({
+                        value: data.toFixed(2),
+                        name: d["name"]
+                    });
+                });
+                console.log(opt);
+                $scope.summaryPieChart.setOption(opt, true);
+                $scope.summaryPieChart.resize();
+                return data;
+            };
+
             $scope.chSummaryChartInput = function () {
                 if(typeof $scope.datas.selectSummaryChartType == "undefined") {
                     $scope.datas.selectSummaryChartType = 0;

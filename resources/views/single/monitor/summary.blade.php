@@ -124,10 +124,11 @@
                     <div>
                         <h3 class="pull-left">图表展示:</h3>
                         <div class="form-inline pull-right mb15">
-                            <div class="form-group">
-                                <label class="">国标值:</label>
-                                <input class="form-control w100" value="0.15">
-                            </div>
+                            {{--<div class="form-group">--}}
+                                {{--<label class="">国标值:</label>--}}
+                                {{--<span class="form-control w100" style="border: none;" ng-bind="0.15"></span>--}}
+                                {{--<input class="form-control w100" value="0.15">--}}
+                            {{--</div>--}}
                             <div class="form-group">
                                 <label class="">数据单位:</label>
                                 <select class="form-control">

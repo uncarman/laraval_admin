@@ -1227,7 +1227,7 @@
         {
             //MyAlert("您离开页面很久了，请重新登录。", function(){
             global.clearLoginStatus();
-            global["goto"]("login");
+            //global["goto"]("login");
             //}, "warning");
             return false;
         },

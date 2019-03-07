@@ -74,7 +74,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="../settings/group">监测配置</a></li>
                     <li><a href="../settings/device">设备管理</a></li>
-                    <li><a href="/settings/base">基本配置</a></li>
+                    <li><a href="../settings/base">基本配置</a></li>
                     <li class="divider"></li>
                     <li><a href="/settings/profile">账号管理</a></li>
                     <li><a href="/settings/roles">权限和角色</a></li>

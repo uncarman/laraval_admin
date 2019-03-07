@@ -170,7 +170,7 @@
                         <div class="form-inline pull-right mb15">
                             <div class="form-group">
                                 <label class="">国标值:</label>
-                                <input class="form-control w100" ng-model="datas.summaryData.internationalValue">
+                                <span class="form-control w100" style="border: none;" ng-bind="datas.summaryData.internationalValue"></span>
                             </div>
                             <div class="form-group">
                                 <label class="">数据单位:</label>
@@ -598,11 +598,12 @@
                 else if($scope.datas.query.type == "month") { fmt = "YYYY-MM" }
                 else if($scope.datas.query.type == "year") { fmt = "YYYY" }
                 var xlen = Math.ceil(moment(moment($scope.datas.toDate).format(fmt)).diff(moment($scope.datas.fromDate).format(fmt), $scope.datas.query.type, true));
-                var sd = [], sd2 = [];
+                var sd = [], sd2 = [], sd3 = [];
                 for(var i=0; i<=xlen; i++) {
                     opt.xAxis[0].data.push(moment($scope.datas.fromDate).add($scope.datas.query.type, i).format(fmt));
                     sd.push(0);
                     sd2.push(0);
+                    sd3.push($scope.datas.summaryData.internationalValue);
                 }
 
                 var r = 1;
@@ -635,6 +636,19 @@
                     name: opt.legend.data[1],
                     type:'line',
                     data: sd2,
+                };
+
+                // 生成国际值数据
+                opt.legend.data[2] = "国际值";
+                ds2.datas.map(function (k) {
+                    var ind = opt.xAxis[0].data.indexOf(moment(k.key).format(fmt));
+                    sd2[ind] = parseFloat(k.val * r).toFixed(4);
+                });
+                opt.series[2] = {
+                    name: opt.legend.data[2],
+                    type:'line',
+                    symbol: 'none',
+                    data: sd3,
                 };
 
                 console.log(JSON.stringify(opt));

@@ -14,10 +14,13 @@
 Auth::routes();
 
 Route::get('/', function () {
-    return redirect()->intended('dashboard');
+    return redirect()->intended('list');
 });
 Route::get('/home', function () {
-    return redirect()->intended('dashboard');
+    return redirect()->intended('list');
+});
+Route::get('/dashboard', function () {
+    return redirect()->intended('list');
 });
 
 Route::get('/sam/fun1', ['uses'=>'SamController@fun1']);
@@ -27,7 +30,7 @@ Route::get('/sam/fun2', ['uses'=>'SamController@fun2']);
 
 //管理员账号管理
 Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
-    Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+    //Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
     Route::get('/ajax_get_building_total', 'HomeController@ajaxGetBuildingSummary')->name('ajaxGetBuildingSummary');
     Route::get('/ajax_get_building_total_by_date', 'HomeController@ajaxGetSummaryByDate')->name('ajaxGetSummaryByDate');
     Route::get('/ajax_get_meters', 'HomeController@ajaxGetMeters')->name('ajaxGetMeters');
@@ -76,6 +79,9 @@ Route::group(['prefix' => '/{buildingId}/settings', 'middleware' => ['auth']], f
 
     Route::get('/device', 'Settings\SettingsDeviceController@index');
     Route::get('/ajaxDeviceList', 'Settings\SettingsDeviceController@ajaxDeviceList');
+
+    Route::get('/base', 'Settings\SettingsBaseController@index');
+    Route::get('/ajaxBaseList', 'Settings\SettingsBaseController@ajaxBaseList');
 
 //    Route::get('/ajaxAlertList', 'Settings\SettingsSummaryController@ajaxAlertList');
 });
